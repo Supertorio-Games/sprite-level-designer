@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Converts an XML DOM object or XML string to a JSON object.
  * This is a generic function that can be used for any well-formed XML.

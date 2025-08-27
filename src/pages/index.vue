@@ -11,6 +11,7 @@
     <v-app-bar-title>Sprite Level Designer</v-app-bar-title>
 
     <template v-slot:append>
+      <display-settings-menu />
       <v-btn icon="mdi-cog" value="Settings" id="activator-settings"></v-btn>
     </template>
     </v-app-bar>
@@ -25,7 +26,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 </script>
 
 <style lang="css" scoped>

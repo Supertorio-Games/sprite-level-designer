@@ -69,9 +69,10 @@
     async function processSpriteSheet() {
         const spriteImageData = await readSpriteImage();
         const spriteImageConfig = await readSpriteConfig();
-        if (spriteImageData && spriteImageConfig) {
-            console.log(spriteStore);
-            spriteStore.addSpriteSheet(spriteImageData, spriteImageConfig);
+        const spriteImageDimensions = await readSpriteImageSize();
+        if (spriteImageData && spriteImageConfig && spriteImageDimensions) {
+            const [width, height] = spriteImageDimensions;
+            spriteStore.addSpriteSheet(spriteImageData, width, height, spriteImageConfig);
             emit("onClose");
         }
     }
@@ -86,6 +87,26 @@
             reject();
         }
     });
+
+    const readSpriteImageSize = () => new Promise<[number, number]>((resolve, reject) => {
+        let img = new Image();
+        if (!spritesInput.value) {
+            reject();
+            return;
+        }
+        const imgURL = window.URL.createObjectURL(spritesInput.value);
+
+        img.onload = () => {
+            resolve([img.width, img.height]);
+            URL.revokeObjectURL(imgURL);
+        }
+        img.onerror = () => {
+            reject();
+        }
+
+        
+        img.src = imgURL;
+    }); 
 
     const readSpriteConfig = () => new Promise<sheetConfig>((resolve, reject) => {
         const reader = new FileReader();
