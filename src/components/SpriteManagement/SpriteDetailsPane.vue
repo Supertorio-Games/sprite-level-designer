@@ -91,7 +91,7 @@
 
     .sprite-display {
         text-align: center;
-        border-width: this;
+        border-width: thin;
         border-color: rgba(var(--v-border-color), var(--v-border-opacity));
         border-style: dashed;
         margin-top: 0.5em;

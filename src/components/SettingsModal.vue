@@ -6,17 +6,6 @@
                 title="Map Settings"
             >
                 <div class="pa-2">
-                    <v-slider
-                        v-model="mapStore.mapScale"
-                        label="Scale"
-                        :max="maxScale"
-                        :min="minScale"
-                        class="align-center"
-                        hide-details
-                        >
-                    </v-slider>
-                </div>
-                <div class="pa-2">
                     <v-number-input
                         v-model="mapStore.mapWidth"
                         :reverse="false"

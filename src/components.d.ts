@@ -8,12 +8,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
-    MapConfig: typeof import('./components/SpriteManagementPane.vue')['default']
-    MapGrid: typeof import('./components/Map/MapGridPane.vue')['default']
+    DisplaySettingsMenu: typeof import('./components/DisplaySettingsMenu.vue')['default']
+    MapGridCell: typeof import('./components/Map/MapGridCell.vue')['default']
     MapGridPane: typeof import('./components/Map/MapGridPane.vue')['default']
     MapModeSelector: typeof import('./components/Map/MapModeSelector.vue')['default']
-    MapSettings: typeof import('./components/Map/SettingsModal.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SettingsModal: typeof import('./components/SettingsModal.vue')['default']
