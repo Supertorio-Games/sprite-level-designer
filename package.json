@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
+    "build-github": "run-p type-check \"build-only-github {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
+    "build-only-github": "vite build --base=/sprite-level-designer/",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --fix"
   },
