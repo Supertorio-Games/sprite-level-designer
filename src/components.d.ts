@@ -9,6 +9,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     DisplaySettingsMenu: typeof import('./components/DisplaySettingsMenu.vue')['default']
+    EditorToolbar: typeof import('./components/EditorToolbar.vue')['default']
+    MapGrid: typeof import('./components/Map/MapGrid.vue')['default']
     MapGridCell: typeof import('./components/Map/MapGridCell.vue')['default']
     MapGridPane: typeof import('./components/Map/MapGridPane.vue')['default']
     MapModeSelector: typeof import('./components/Map/MapModeSelector.vue')['default']

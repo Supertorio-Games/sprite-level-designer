@@ -11,7 +11,7 @@ import { MAP_MODE, useMapStore } from '@/state/mapStore';
 import { useSpritesStore } from '@/state/spritesStore';
 import { computed } from 'vue';
 
-const props = defineProps(['cellindex']);
+const props = defineProps(['cellindex', 'row', 'col']);
 const mapStore = useMapStore();
 const spriteStore = useSpritesStore();
 
@@ -21,13 +21,13 @@ const cellClickAction = () => {
             // cell fill action
             if (spriteStore.selectedSpriteID) {
                 let [sheetId, spriteId] = spriteStore.selectedSpriteID;
-                mapStore.setTileSprite(props.cellindex, sheetId, spriteId);
+                mapStore.setTileSprite(props.row, props.col, sheetId, spriteId);
             }
             break;
         case MAP_MODE.FILL:
             break;
         case MAP_MODE.ERASE:
-                mapStore.clearTileSprite(props.cellindex);
+                mapStore.clearTileSprite(props.row, props.col);
             break;
         default:
             // Cell Select Action
@@ -36,7 +36,7 @@ const cellClickAction = () => {
 };
 
 const cellStyles = computed(() => {
-    const cell = mapStore.getCellByIndex(props.cellindex);
+    const cell = mapStore.getCell(props.row, props.col);
     const bgStyles:Record<string, string> = {};
 
     if (cell.sprite != null) {
