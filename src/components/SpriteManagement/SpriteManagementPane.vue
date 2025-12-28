@@ -1,17 +1,6 @@
 <template>
-    <sprite-sheet-ingest-form :showDialog="showIngestFormDialog" @on-close="showIngestFormDialog = false"  />
     <div class="d-flex flex-column h-100">
-        <v-toolbar border density="compact" class="flex-0-0">
-            <template v-slot:prepend>
-                <map-mode-selector></map-mode-selector>
-            </template>
-            <template v-slot:append>
-                <v-btn 
-                prepend-icon="mdi-plus-circle"
-                @click="showIngestFormDialog = true"
-                >Add Spritesheet</v-btn>
-            </template>
-        </v-toolbar>
+        <editor-toolbar></editor-toolbar>
         
         <div class="d-flex flex-row flex-1-1-100 sheets-wrapper">
             

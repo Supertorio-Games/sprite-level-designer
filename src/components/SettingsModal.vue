@@ -6,26 +6,6 @@
                 title="Map Settings"
             >
                 <div class="pa-2">
-                    <v-number-input
-                        v-model="mapStore.mapWidth"
-                        :reverse="false"
-                        controlVariant="default"
-                        label="Width"
-                        :hideInput="false"
-                        :inset="false"
-                        ></v-number-input>
-                </div>
-                <div class="pa-2">
-                    <v-number-input
-                        v-model="mapStore.mapHeight"
-                        :reverse="false"
-                        controlVariant="default"
-                        label="Height"
-                        :hideInput="false"
-                        :inset="false"
-                        ></v-number-input>
-                </div>
-                <div class="pa-2">
                     <v-color-picker 
                         v-model="mapStore.mapBackground"
                         mode="rgb"
