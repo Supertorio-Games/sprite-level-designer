@@ -33,12 +33,13 @@
 
 <script setup lang="ts">
     import { ref, watch } from 'vue';
-    import xmlToJson from '@/util/transformers/xmlToJson';
-    import { useSpritesStore, type sheetConfig } from '@/state/spritesStore';
+    import { useSpritesStore } from '@/state/spritesStore';
+    import SpriteSheetInjestService from '@/services/SpriteSheetInjestService';
 
     const dialogOpen = ref<boolean>(false);
     const props = defineProps(['showDialog']);
     const emit = defineEmits(['onClose']);
+    const injestService = new SpriteSheetInjestService();
 
     const spriteStore = useSpritesStore();
 
@@ -46,7 +47,6 @@
         dialogOpen.value = newValue;
     });
 
-    
     const spritesInput = ref<File>();
     const configInput = ref<File>();
 
@@ -67,59 +67,17 @@
     }
 
     async function processSpriteSheet() {
-        const spriteImageData = await readSpriteImage();
-        const spriteImageConfig = await readSpriteConfig();
-        const spriteImageDimensions = await readSpriteImageSize();
-        if (spriteImageData && spriteImageConfig && spriteImageDimensions) {
-            const [width, height] = spriteImageDimensions;
-            spriteStore.addSpriteSheet(spriteImageData, width, height, spriteImageConfig);
-            emit("onClose");
-        }
+        await injestService.processSpriteSheet(spritesInput.value!, configInput.value!).then(
+            ({ spriteImageData, width, height, spriteImageConfig }) => {
+                spriteStore.addSpriteSheet(spriteImageData, width, height, spriteImageConfig);
+                emit("onClose");
+            }
+        ).catch(
+            (error) => {
+                console.error("Error processing sprite sheet:", error);
+                emit("onClose");
+            }
+        );
     }
-
-    const readSpriteImage = () => new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (event) => resolve(reader.result as string);
-        reader.onerror = reject;
-        if (spritesInput.value) {
-            reader.readAsDataURL(spritesInput.value);
-        } else {
-            reject();
-        }
-    });
-
-    const readSpriteImageSize = () => new Promise<[number, number]>((resolve, reject) => {
-        let img = new Image();
-        if (!spritesInput.value) {
-            reject();
-            return;
-        }
-        const imgURL = window.URL.createObjectURL(spritesInput.value);
-
-        img.onload = () => {
-            resolve([img.width, img.height]);
-            URL.revokeObjectURL(imgURL);
-        }
-        img.onerror = () => {
-            reject();
-        }
-
-        
-        img.src = imgURL;
-    }); 
-
-    const readSpriteConfig = () => new Promise<sheetConfig>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            const text = reader.result as string;
-            resolve(xmlToJson(text) as sheetConfig);
-        }
-        reader.onerror = reject;
-        if (configInput.value) {
-            reader.readAsText(configInput.value);
-        } else {
-            reject();
-        }
-    });
 
 </script>
