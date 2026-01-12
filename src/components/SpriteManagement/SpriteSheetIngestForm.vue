@@ -34,12 +34,12 @@
 <script setup lang="ts">
     import { ref, watch } from 'vue';
     import { useSpritesStore } from '@/state/spritesStore';
-    import SpriteSheetInjestService from '@/services/SpriteSheetInjestService';
+    import SpriteSheetIngest from '@/util/spriteSheetIngest';
 
     const dialogOpen = ref<boolean>(false);
     const props = defineProps(['showDialog']);
     const emit = defineEmits(['onClose']);
-    const injestService = new SpriteSheetInjestService();
+    const spritesIngest = new SpriteSheetIngest();
 
     const spriteStore = useSpritesStore();
 
@@ -67,7 +67,7 @@
     }
 
     async function processSpriteSheet() {
-        await injestService.processSpriteSheet(spritesInput.value!, configInput.value!).then(
+        await spritesIngest.processSpriteSheet(spritesInput.value!, configInput.value!).then(
             ({ spriteImageData, width, height, spriteImageConfig }) => {
                 spriteStore.addSpriteSheet(spriteImageData, width, height, spriteImageConfig);
                 emit("onClose");

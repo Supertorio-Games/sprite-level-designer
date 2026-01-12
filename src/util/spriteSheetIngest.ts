@@ -1,7 +1,7 @@
 import {type sheetConfig } from '@/state/spritesStore';
 import xmlToJson from '@/util/transformers/xmlToJson';
 
-class SpriteSheetInjestService {
+class SpriteSheetIngest {
 
     async  processSpriteSheet(spriteSheetInput:File, configInput:File ) : Promise<{spriteImageData: string, width: number, height: number, spriteImageConfig: sheetConfig}>
     {
@@ -74,4 +74,4 @@ class SpriteSheetInjestService {
     }
 }
 
-export default SpriteSheetInjestService;
+export default SpriteSheetIngest;
