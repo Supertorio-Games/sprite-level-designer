@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
+const StoreName = "sprites";
 
 export type spriteSheet = {
     _id: number;
@@ -24,27 +25,26 @@ export type subTexture = {
     y: number;
 }
 
-export const useSpritesStore = defineStore('sprites', () => {
+export const useSpritesStore = defineStore(StoreName, () => {
     const spriteSheets = ref<spriteSheet[]>([]);
     const selectedSheetId = ref<number>(-1);
     const selectedSpriteImageId = ref<number>(-1);
-
     const nextSheetID = () => spriteSheets.value.length;
 
     const addSpriteSheet = (imageData: string, width: number, height: number, config: sheetConfig) => {
-            config.SubTexture.forEach((texture, index) => {
-                texture._id = index;
-            });
+        config.SubTexture.forEach((texture, index) => {
+            texture._id = index;
+        });
 
-            const sheet : spriteSheet = {
-                _id: nextSheetID(),
-                width,
-                height,
-                imageData,
-                config
-            };
-            spriteSheets.value.push(sheet);
+        const sheet : spriteSheet = {
+            _id: nextSheetID(),
+            width,
+            height,
+            imageData,
+            config
         };
+        spriteSheets.value.push(sheet);
+    };
 
     const setSelectedSprite = (sheetIndex = -1, textureIndex = -1) => {
         selectedSheetId.value = sheetIndex;
@@ -87,7 +87,7 @@ export const useSpritesStore = defineStore('sprites', () => {
     };
 
     return { 
-        spriteSheets, 
+        spriteSheets,
         hasSheets,
         selectedSprite,
         selectedSpriteID,
@@ -96,4 +96,7 @@ export const useSpritesStore = defineStore('sprites', () => {
         findSprite,
         setSelectedSprite,
     };
-})
+
+}, {
+    persist: true,
+});
