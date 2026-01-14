@@ -1,12 +1,12 @@
+import type { cellPos } from '@/types';
 import { defineStore, type StateTree } from 'pinia'
-import type { Serializer } from 'pinia-plugin-persistedstate';
 import { computed, ref, reactive, watch, toRaw } from 'vue'
 
 const StoreName = "levelMap";
 
 export enum MAP_MODE {SELECT = 0, PAINT = 1, FILL = 2, ERASE = 3};
 
-export type mapCell = {
+type mapCell = {
     sprite: [number, number] | null;
 }
 
@@ -149,12 +149,30 @@ export const useMapStore = defineStore(StoreName, () => {
         return mapGrid[row][col];
     }
 
+    // Actions
+
     const setTileSprite = (row: number, col: number, sheetIndex: number, spriteIndex: number) => {
         getCell(row, col).sprite = [sheetIndex, spriteIndex];
     }
 
+    const fillTileSpriteRange = (startTile:cellPos, endTile: cellPos, sheetIndex: number, spriteIndex: number) => {
+        for (let r = startTile.row; r <= endTile.row; r++) {
+            for (let c = startTile.col; c <= endTile.col; c++) {
+                setTileSprite(r, c, sheetIndex, spriteIndex);
+            }
+        }
+    }
+
     const clearTileSprite = (row: number, col: number) => {
         getCell(row, col).sprite = null;
+    }
+
+    const clearTileSpriteRange = (startTile:cellPos, endTile: cellPos) => {
+        for (let r = startTile.row; r <= endTile.row; r++) {
+            for (let c = startTile.col; c <= endTile.col; c++) {
+                clearTileSprite(r, c);
+            }
+        }
     }
 
 
@@ -172,7 +190,9 @@ export const useMapStore = defineStore(StoreName, () => {
         getCell,
         getCellByIndex,
         setTileSprite,
+        fillTileSpriteRange,
         clearTileSprite,
+        clearTileSpriteRange,
     };
 
 }, {
