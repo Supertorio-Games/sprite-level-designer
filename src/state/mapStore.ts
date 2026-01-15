@@ -1,12 +1,12 @@
+import type { cellPos } from '@/types';
 import { defineStore, type StateTree } from 'pinia'
-import type { Serializer } from 'pinia-plugin-persistedstate';
 import { computed, ref, reactive, watch, toRaw } from 'vue'
 
 const StoreName = "levelMap";
 
-export enum MAP_MODE {SELECT = 0, PAINT = 1, FILL = 2, ERASE = 3};
+export enum MAP_MODE {SELECT = 0, PAINT = 1, SAMPLE = 2, ERASE = 3};
 
-export type mapCell = {
+type mapCell = {
     sprite: [number, number] | null;
 }
 
@@ -46,6 +46,9 @@ export const useMapStore = defineStore(StoreName, () => {
     const mapScale = ref<number>(DEFAULT_MAP_SCALE);
     const mapBackground = ref<string>(DEFAULT_MAP_BACKGROUND);
 
+    const selectionStart = ref<cellPos| null>(null);
+    const selectionEnd = ref<cellPos | null>(null);
+
     // This is used to trigger a persistance update after the deeply reactive mapGrid changes.
     // Watchers on mapWidth and mapHeight will toggle this value to force a save after the grid has been resized.
     const persistTrigger = ref<boolean>(false);
@@ -83,12 +86,25 @@ export const useMapStore = defineStore(StoreName, () => {
 
     // Watchers
 
+    watch(editMode, (newMode) => {
+        if (newMode !== MAP_MODE.SELECT) {
+            clearSelectionRange();
+        }
+    });
+
     watch(mapWidth, (newWidth, oldWidth) => {
         if (newWidth > oldWidth) {
             const diff = newWidth - oldWidth;
             for (let r = 0; r < mapHeight.value; r++) {
                 for (let c = 0; c < diff; c++) {
-                    mapGrid[r].push({sprite: null});
+                    if (!mapGrid[r]) {
+                        mapGrid[r] = [];
+                        for (let c = 0; c < newWidth; c++) {
+                            mapGrid[r].push({sprite: null});
+                        }
+                    } else {
+                        mapGrid[r].push({sprite: null});
+                    }
                 }
             }
         } else {
@@ -149,12 +165,58 @@ export const useMapStore = defineStore(StoreName, () => {
         return mapGrid[row][col];
     }
 
+    const hasSelectionRange = computed(() => {
+        return selectionStart.value != null && selectionEnd.value != null;
+    });
+
+    const cellSelectionRange = computed(() => {
+        if (selectionStart.value == null || selectionEnd == null) {
+            return null;
+        }
+
+        const startRow = Math.min(selectionStart.value?.row || 0, selectionEnd.value?.row || 0);
+        const endRow = Math.max(selectionStart.value?.row || 0, selectionEnd.value?.row || 0);
+        const startCol = Math.min(selectionStart.value?.col || 0, selectionEnd.value?.col || 0);
+        const endCol = Math.max(selectionStart.value?.col || 0, selectionEnd.value?.col || 0);
+        return { start: { row: startRow, col: startCol }, end: { row: endRow, col: endCol } };
+    });
+
+    // Actions
+
     const setTileSprite = (row: number, col: number, sheetIndex: number, spriteIndex: number) => {
         getCell(row, col).sprite = [sheetIndex, spriteIndex];
     }
 
+    const fillSelectionWithSprite = (sheetId: number, spriteId: number) => {
+        if (!hasSelectionRange.value || sheetId < 0 || spriteId < 0) return;
+
+        for (let r = cellSelectionRange.value!.start.row; r <= cellSelectionRange.value!.end.row; r++) {
+            for (let c = cellSelectionRange.value!.start.col; c <= cellSelectionRange.value!.end.col; c++) {
+                setTileSprite(r, c, sheetId, spriteId);
+            }
+        }
+
+        clearSelectionRange();
+    };
+
     const clearTileSprite = (row: number, col: number) => {
         getCell(row, col).sprite = null;
+    }
+
+    const clearSpritesFromSelection = () => {
+        if (!hasSelectionRange.value) return;
+
+         for (let r = cellSelectionRange.value!.start.row; r <= cellSelectionRange.value!.end.row; r++) {
+            for (let c = cellSelectionRange.value!.start.col; c <= cellSelectionRange.value!.end.col; c++) {
+                clearTileSprite(r, c);
+            }
+        }
+        clearSelectionRange();
+    };
+
+    const clearSelectionRange = () => {
+        selectionStart.value = null;
+        selectionEnd.value = null;
     }
 
 
@@ -164,6 +226,8 @@ export const useMapStore = defineStore(StoreName, () => {
         mapHeight,
         mapScale,
         mapBackground,
+        selectionStart,
+        selectionEnd,
         enableGrid,
         mapGrid,
         mapGridRef,
@@ -171,12 +235,18 @@ export const useMapStore = defineStore(StoreName, () => {
         editMode,
         getCell,
         getCellByIndex,
+        hasSelectionRange,
+        cellSelectionRange,
         setTileSprite,
+        fillSelectionWithSprite,
+        clearSpritesFromSelection,
         clearTileSprite,
+        clearSelectionRange,
     };
 
 }, {
     persist: {
-        serializer: serializer
+        serializer: serializer,
+        omit: ['selectionStart', 'selectionEnd'],
     },
 });
