@@ -22,17 +22,11 @@ const mapStore = useMapStore();
 const spriteStore = useSpritesStore();
 
 const cellClickAction = () => {
-    switch(mapStore.editMode) {
-        case MAP_MODE.PAINT:
-            paintCell();
-            break;
-        case MAP_MODE.FILL:
-            break;
-        case MAP_MODE.ERASE:
-            clearCell();
-            break;
-        default:
-            // Cell Select Action
+    if (mapStore.editMode == MAP_MODE.PAINT) {
+        paintCell();
+    }
+    else if (mapStore.editMode == MAP_MODE.ERASE) {
+        clearCell();
     }
 };
 
