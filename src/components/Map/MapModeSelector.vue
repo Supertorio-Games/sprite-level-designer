@@ -12,9 +12,14 @@
                     <v-btn icon="mdi-cursor-default"  v-bind="props"></v-btn>
                 </template>
             </v-tooltip>
-            <v-tooltip text="Paint (w)" location="top">
+            <v-tooltip text="Brush (b)" location="top">
                 <template v-slot:activator="{ props }">
                     <v-btn icon="mdi-brush" v-bind="props"></v-btn>
+                </template>
+            </v-tooltip>
+            <v-tooltip text="Eyedropper (I)" location="top">
+                <template v-slot:activator="{ props }">
+                    <v-btn icon="mdi-eyedropper" v-bind="props"></v-btn>
                 </template>
             </v-tooltip>
             <v-tooltip text="Erase (e)" location="top">
@@ -64,8 +69,11 @@
     onKeyStroke('s', () => {
        mapStore.editMode = MAP_MODE.SELECT;
     });
-    onKeyStroke('w', () => {
+    onKeyStroke('b', () => {
        mapStore.editMode = MAP_MODE.PAINT;
+    });
+    onKeyStroke('i', () => {
+       mapStore.editMode = MAP_MODE.SAMPLE;
     });
     onKeyStroke('e', () => {
        mapStore.editMode = MAP_MODE.ERASE;

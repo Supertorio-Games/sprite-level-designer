@@ -4,7 +4,7 @@ import { computed, ref, reactive, watch, toRaw } from 'vue'
 
 const StoreName = "levelMap";
 
-export enum MAP_MODE {SELECT = 0, PAINT = 1, ERASE = 2};
+export enum MAP_MODE {SELECT = 0, PAINT = 1, SAMPLE = 2, ERASE = 3};
 
 type mapCell = {
     sprite: [number, number] | null;
@@ -85,7 +85,13 @@ export const useMapStore = defineStore(StoreName, () => {
     const editMode = ref<MAP_MODE>(MAP_MODE.SELECT);
 
     // Watchers
-    
+
+    watch(editMode, (newMode) => {
+        if (newMode !== MAP_MODE.SELECT) {
+            clearSelectionRange();
+        }
+    });
+
     watch(mapWidth, (newWidth, oldWidth) => {
         if (newWidth > oldWidth) {
             const diff = newWidth - oldWidth;

@@ -25,6 +25,9 @@ const cellClickAction = () => {
     if (mapStore.editMode == MAP_MODE.PAINT) {
         paintCell();
     }
+    else if (mapStore.editMode == MAP_MODE.SAMPLE) {
+        sampleCell();
+    }
     else if (mapStore.editMode == MAP_MODE.ERASE) {
         clearCell();
     }
@@ -74,6 +77,13 @@ const paintCell = () => {
     if (spriteStore.selectedSpriteID) {
         let [sheetId, spriteId] = spriteStore.selectedSpriteID;
         mapStore.setTileSprite(props.row, props.col, sheetId, spriteId);
+    }
+};
+
+const sampleCell = () => {
+    const cell = mapStore.getCell(props.row, props.col);
+    if (cell.sprite != null) {
+        spriteStore.setSelectedSprite(cell.sprite[0], cell.sprite[1]);
     }
 };
 
