@@ -1,29 +1,8 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-
+import type { spriteSheet, sheetConfig } from '@/types';
 const StoreName = "sprites";
 
-export type spriteSheet = {
-    _id: number;
-    imageData: string;
-    width: number;
-    height: number;
-    config: sheetConfig;
-}
-
-export type sheetConfig = {
-    imagePath: string;
-    SubTexture: subTexture[];
-}
-
-export type subTexture = {
-    _id: number;
-    name: string;
-    height: number;
-    width: number;
-    x: number;
-    y: number;
-}
 
 export const useSpritesStore = defineStore(StoreName, () => {
     const spriteSheets = ref<spriteSheet[]>([]);

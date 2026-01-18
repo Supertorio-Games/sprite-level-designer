@@ -8,12 +8,15 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CodeOutputKaplay: typeof import('./components/Output/CodeOutputKaplay.vue')['default']
+    CodeOutputPhaser: typeof import('./components/Output/CodeOutputPhaser.vue')['default']
     DisplaySettingsMenu: typeof import('./components/DisplaySettingsMenu.vue')['default']
     EditorToolbar: typeof import('./components/EditorToolbar.vue')['default']
     MapGrid: typeof import('./components/Map/MapGrid.vue')['default']
     MapGridCell: typeof import('./components/Map/MapGridCell.vue')['default']
     MapGridPane: typeof import('./components/Map/MapGridPane.vue')['default']
     MapModeSelector: typeof import('./components/Map/MapModeSelector.vue')['default']
+    OutputDisplayWindow: typeof import('./components/Output/OutputDisplayWindow.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SettingsModal: typeof import('./components/SettingsModal.vue')['default']

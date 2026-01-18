@@ -1,4 +1,4 @@
-import {type sheetConfig } from '@/state/spritesStore';
+import {type sheetConfig } from '@/types';
 import xmlToJson from '@/util/transformers/xmlToJson';
 
 class SpriteSheetIngest {

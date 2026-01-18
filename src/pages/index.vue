@@ -11,6 +11,7 @@
     <v-app-bar-title>Sprite Level Designer</v-app-bar-title>
 
     <template v-slot:append>
+      <v-btn prepend-icon="mdi-code-braces" variant="tonal" @click="showCodeView = true">Display Code</v-btn>
       <display-settings-menu />
       <v-btn icon="mdi-cog" value="Settings" id="activator-settings"></v-btn>
     </template>
@@ -22,10 +23,26 @@
         <sprite-management-pane />
       </div>
     </v-main>
+
+    <v-dialog width="90%" min-height="60%" max-height="90%" v-model="showCodeView">
+        <v-card title="Code Output" height="100%">
+          <output-display-window />
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text="Close Dialog"
+              @click="showCodeView = false"
+            ></v-btn>
+          </v-card-actions>
+        </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
 <script lang="ts" setup>
+  import { ref } from 'vue';
+
+  const showCodeView = ref(false);
 </script>
 
 <style lang="css" scoped>

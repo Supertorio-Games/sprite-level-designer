@@ -1,14 +1,10 @@
-import type { cellPos } from '@/types';
+import type { cellPos, mapCell } from '@/types';
 import { defineStore, type StateTree } from 'pinia'
 import { computed, ref, reactive, watch, toRaw } from 'vue'
 
 const StoreName = "levelMap";
 
 export enum MAP_MODE {SELECT = 0, PAINT = 1, SAMPLE = 2, ERASE = 3};
-
-type mapCell = {
-    sprite: [number, number] | null;
-}
 
 const defaultMapCell: mapCell = {
     sprite: null,
@@ -148,7 +144,7 @@ export const useMapStore = defineStore(StoreName, () => {
     // Getters
 
     const cellDisplaySize = computed(() => cellSize.value * mapScale.value);
-
+    
     const getCell = (row: number, col: number) => {
         row--; col--;
         if ( row < 0 || row >= mapGrid.length ||
