@@ -11,6 +11,7 @@
     <v-app-bar-title>Sprite Level Designer</v-app-bar-title>
 
     <template v-slot:append>
+      <v-btn to="/output" prepend-icon="mdi-code-braces" variant="tonal">Display Code</v-btn>
       <display-settings-menu />
       <v-btn icon="mdi-cog" value="Settings" id="activator-settings"></v-btn>
     </template>

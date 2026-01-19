@@ -8,6 +8,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CodeOutputKaplay: typeof import('./components/Output/CodeOutputKaplay.vue')['default']
+    CodeOutputPhaser: typeof import('./components/Output/CodeOutputPhaser.vue')['default']
     DisplaySettingsMenu: typeof import('./components/DisplaySettingsMenu.vue')['default']
     EditorToolbar: typeof import('./components/EditorToolbar.vue')['default']
     MapGrid: typeof import('./components/Map/MapGrid.vue')['default']
