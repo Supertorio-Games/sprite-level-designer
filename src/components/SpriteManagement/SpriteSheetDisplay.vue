@@ -20,7 +20,8 @@
 
 <script setup lang="ts">
     import { computed } from 'vue';
-    import { useSpritesStore, type subTexture } from '@/state/spritesStore';
+    import { useSpritesStore } from '@/state/spritesStore';
+    import type { subTexture } from '@/types';
     
     const { setSelectedSprite } = useSpritesStore();
 

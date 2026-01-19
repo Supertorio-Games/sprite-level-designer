@@ -15,7 +15,8 @@
 <script setup lang="ts">
     import { computed } from "vue";
     import { storeToRefs } from "pinia";
-    import { useSpritesStore, type subTexture } from "@/state/spritesStore";
+    import { useSpritesStore } from "@/state/spritesStore";
+    import type {subTexture} from "@/types";
 
     const spriteStore = useSpritesStore();
     const { selectedSprite } = storeToRefs(spriteStore);
