@@ -1,34 +1,43 @@
 <template>
-    <v-sheet class="pa-5" elevation="0">
+    <div class="pa-5 h-100 overflow-auto">
         <VCodeBlock
             :code="code"
             highlightjs
             lang="javascript"
             theme="neon-bunny"
         />
-    </v-sheet>
+    </div>
 </template>
 
 
 <script lang="ts" setup>
-    import { ref } from 'vue';
+    import { ref, watch } from 'vue';
     import VCodeBlock from '@wdns/vue-code-block';
     import { useMapStore } from '@/state/mapStore';
     import { useSpritesStore } from '@/state/spritesStore';
-    import { ADD_LEVEL_CODE, formatLevelConfig, formatLevelMap, formatSpriteAtlasConfig, parseMapGridForExport, parseSpriteSheetsForExport } from '@/util/kaplayJsExporters';
+    import { CODE_PREFIX_COMMENT, ADD_LEVEL_CODE, formatLevelConfig, formatLevelMap, formatSpriteAtlasConfig, 
+        parseMapGridForExport, parseSpriteSheetsForExport } from '@/util/kaplayJsExporters';
 
     const mapStore = useMapStore();
     const spritesStore = useSpritesStore();
+    const code = ref<string>("");
 
-    // Get Map Data From Stores
-    const mapExportData = parseMapGridForExport(mapStore.mapGrid, mapStore.mapWidth, mapStore.mapHeight);
-    const spriteExportData = parseSpriteSheetsForExport(spritesStore.spriteSheets, mapExportData.spriteMapKeys);
 
-    // Format Ouptut Code Strings
-    const atlasConfigString = formatSpriteAtlasConfig(spriteExportData);
-    const levelMapString = formatLevelMap(mapExportData.asciMap);
-    const levelConfigString = formatLevelConfig(mapExportData.spriteMapKeys, spritesStore.spriteSheets);
+    const processMapData = () => {
+        let mapExportData = parseMapGridForExport(mapStore.mapGrid, mapStore.mapWidth, mapStore.mapHeight);
+        let spriteExportData = parseSpriteSheetsForExport(spritesStore.spriteSheets, mapExportData.spriteMapKeys);
 
-    const code = ref(atlasConfigString + levelMapString + levelConfigString + ADD_LEVEL_CODE);
+        let atlasConfigString = formatSpriteAtlasConfig(spriteExportData);
+        let asciMapString = formatLevelMap(mapExportData.asciMap);
+        let levelConfigString = formatLevelConfig(mapExportData.spriteMapKeys, spritesStore.spriteSheets);
+        code.value = CODE_PREFIX_COMMENT + atlasConfigString + asciMapString + levelConfigString + ADD_LEVEL_CODE;
+    }
 
+    // Because of the hacky way we are hydrating the map from local storage
+    // there might be the need to watch for the mapGrid to be updated on a fresh page load
+    watch([mapStore.mapGrid, spritesStore.spriteSheets], () => {
+        processMapData();
+    });
+
+    processMapData();
 </script>

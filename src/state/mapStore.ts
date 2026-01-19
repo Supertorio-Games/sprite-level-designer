@@ -139,6 +139,7 @@ export const useMapStore = defineStore(StoreName, () => {
                 mapGrid[r][c] = newGrid[r][c] || {...defaultMapCell};
             }
         }
+        persistTrigger.value = !persistTrigger.value;
     });
 
     // Getters

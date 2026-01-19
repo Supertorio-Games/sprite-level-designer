@@ -1,9 +1,8 @@
 import type { kaplaySpriteAtlasConfig, mapCell, spriteSheet } from "@/types";
+import { MAP_SPRITE_IDS } from "@/config";
 
-const MapSpriteIdentifiers = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 
-    'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 
-    'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
+// TODO: Localize and Expand on the code commenting
+export const CODE_PREFIX_COMMENT = `// Level Definition and Config for use in the KaplayJS game framework \n`;
 export const ADD_LEVEL_CODE = `addLevel(levelMap, levelConfig);\n\n`
 
 export const parseMapGridForExport = (mapGrid: mapCell[][], mapWidth: number, mapHeight: number) => {
@@ -13,7 +12,11 @@ export const parseMapGridForExport = (mapGrid: mapCell[][], mapWidth: number, ma
 
     for (let r = 0; r < mapHeight; r++) {
         let rowString = '';
+        if (mapGrid.length <= r) continue;
+
         for (let c = 0; c < mapWidth; c++) {
+            if (mapGrid[r].length <= c) continue;
+            
             const cell = mapGrid[r][c];
             if (cell.sprite) {
                 const key = `${cell.sprite[0]}_${cell.sprite[1]}`;
@@ -21,11 +24,11 @@ export const parseMapGridForExport = (mapGrid: mapCell[][], mapWidth: number, ma
 
                 if (usedIndex < 0 ) {
                     usedSpriteKeys.push(key);
-                    const identifier = MapSpriteIdentifiers[usedSpriteKeys.length - 1];
+                    const identifier = MAP_SPRITE_IDS[usedSpriteKeys.length - 1];
                     usedSpriteValues[identifier] = [cell.sprite[0], cell.sprite[1]];
                     rowString += identifier;
                 } else {
-                    const identifier = MapSpriteIdentifiers[usedIndex];
+                    const identifier = MAP_SPRITE_IDS[usedIndex];
                     rowString += identifier;
                 }
 
