@@ -10,7 +10,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     CodeOutputKaplay: typeof import('./components/Output/CodeOutputKaplay.vue')['default']
     CodeOutputPhaser: typeof import('./components/Output/CodeOutputPhaser.vue')['default']
-    DisplaySettingsMenu: typeof import('./components/DisplaySettingsMenu.vue')['default']
     EditorToolbar: typeof import('./components/EditorToolbar.vue')['default']
     KaplayExportOptions: typeof import('./components/Output/KaplayExportOptions.vue')['default']
     MapGrid: typeof import('./components/Map/MapGrid.vue')['default']
@@ -19,7 +18,7 @@ declare module 'vue' {
     MapModeSelector: typeof import('./components/Map/MapModeSelector.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SettingsModal: typeof import('./components/SettingsModal.vue')['default']
+    SettingsToolbar: typeof import('./components/SettingsToolbar.vue')['default']
     SpriteDetailsPane: typeof import('./components/SpriteManagement/SpriteDetailsPane.vue')['default']
     SpriteManagementPane: typeof import('./components/SpriteManagement/SpriteManagementPane.vue')['default']
     SpriteSheetDisplay: typeof import('./components/SpriteManagement/SpriteSheetDisplay.vue')['default']

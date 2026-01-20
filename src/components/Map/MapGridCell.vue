@@ -12,7 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { MAP_MODE, useMapStore } from '@/state/mapStore';
+import { useMapStore } from '@/state/mapStore';
+import { MAP_MODE, useAppStore } from '@/state/appStore';
 import { useSpritesStore } from '@/state/spritesStore';
 import { computed } from 'vue';
 
@@ -20,56 +21,57 @@ const props = defineProps(['cellindex', 'row', 'col', 'selection', 'brushMode'])
 const emits = defineEmits(['selectStart', 'selectMove', 'selectEnd', 'enterBrushMode', 'exitBrushMode']);
 const mapStore = useMapStore();
 const spriteStore = useSpritesStore();
+const appConfigStore = useAppStore();
 
 const cellClickAction = () => {
-    if (mapStore.editMode == MAP_MODE.PAINT) {
+    if (appConfigStore.editMode == MAP_MODE.PAINT) {
         paintCell();
     }
-    else if (mapStore.editMode == MAP_MODE.SAMPLE) {
+    else if (appConfigStore.editMode == MAP_MODE.SAMPLE) {
         sampleCell();
     }
-    else if (mapStore.editMode == MAP_MODE.ERASE) {
+    else if (appConfigStore.editMode == MAP_MODE.ERASE) {
         clearCell();
     }
 };
 
 const mouseDownAction = () => {
-    if (mapStore.editMode == MAP_MODE.SELECT) {
+    if (appConfigStore.editMode == MAP_MODE.SELECT) {
         emits("selectStart", {row: props.row, col: props.col});
     }
-    else if (mapStore.editMode == MAP_MODE.PAINT) {
+    else if (appConfigStore.editMode == MAP_MODE.PAINT) {
         emits("enterBrushMode");
         paintCell();
     }
-    else if (mapStore.editMode == MAP_MODE.ERASE) {
+    else if (appConfigStore.editMode == MAP_MODE.ERASE) {
         emits("enterBrushMode");
         clearCell();
     }  
 };
 
 const mouseOverAction = () => {
-    if (mapStore.editMode == MAP_MODE.SELECT) {
+    if (appConfigStore.editMode == MAP_MODE.SELECT) {
         emits("selectMove", {row: props.row, col: props.col});
     }
     
 };
 
 const mouseUpAction = () => {
-    if (mapStore.editMode == MAP_MODE.SELECT) {
+    if (appConfigStore.editMode == MAP_MODE.SELECT) {
         emits("selectEnd", {row: props.row, col: props.col});
     }
-    else if (mapStore.editMode == MAP_MODE.PAINT) {
+    else if (appConfigStore.editMode == MAP_MODE.PAINT) {
         emits("exitBrushMode");
     }
-    else if (mapStore.editMode == MAP_MODE.ERASE) {
+    else if (appConfigStore.editMode == MAP_MODE.ERASE) {
         emits("exitBrushMode");
     }
 };
 
 const mouseEnterEffect = () => {
     if (!props.brushMode) return;
-    if (mapStore.editMode == MAP_MODE.PAINT) paintCell();
-    else if (mapStore.editMode == MAP_MODE.ERASE) clearCell();
+    if (appConfigStore.editMode == MAP_MODE.PAINT) paintCell();
+    else if (appConfigStore.editMode == MAP_MODE.ERASE) clearCell();
 };
 
 
@@ -100,8 +102,8 @@ const cellStyles = computed(() => {
         bgStyles.backgroundImage = 'var(--sheet-bg-' + cell.sprite[0] + ')';
 
         const sprite = spriteStore.findSprite(cell.sprite);
-        const posX = (sprite?.x || 0) * mapStore.mapScale;
-        const posY = (sprite?.y || 0) * mapStore.mapScale;
+        const posX = (sprite?.x || 0) * appConfigStore.mapScale;
+        const posY = (sprite?.y || 0) * appConfigStore.mapScale;
 
         bgStyles.backgroundPosition = "-" + posX + "px -" + posY + "px ";
     }
@@ -120,7 +122,7 @@ const isCellSelected = computed(() => {
 
 const cellClasses = computed(() => {
     return {
-        'gridded': mapStore.enableGrid,
+        'gridded': appConfigStore.enableGridLines,
         'selection-start-row': isCellSelected.value &&  props.row == props.selection.start.row,
         'selection-end-row': isCellSelected.value &&  props.row == props.selection.end.row,
         'selection-start-col': isCellSelected.value &&  props.col == props.selection.start.col,

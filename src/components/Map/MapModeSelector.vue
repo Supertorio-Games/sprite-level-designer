@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-btn-toggle
-            v-model="mapStore.editMode"
+            v-model="appConfigStore.editMode"
             divided
             mandatory
             rounded
@@ -49,12 +49,15 @@
 </template>
 
 <script setup lang="ts">
+    import { watch } from 'vue';
     import { onKeyStroke } from '@vueuse/core'
-    import { MAP_MODE, useMapStore } from '@/state/mapStore';
+    import { useMapStore } from '@/state/mapStore';
     import { useSpritesStore } from '@/state/spritesStore';
+    import { MAP_MODE, useAppStore } from '@/state/appStore';
 
     const mapStore = useMapStore();
     const spriteStore = useSpritesStore();
+    const appConfigStore = useAppStore();
 
     const fillSelection = () => {
         if (!spriteStore.selectedSpriteID || !mapStore.hasSelectionRange) return;
@@ -66,17 +69,23 @@
         mapStore.clearSpritesFromSelection();
     };
 
+    watch(() => appConfigStore.editMode, (newMode) => {
+        if (newMode !== MAP_MODE.SELECT) {
+            mapStore.clearSelectionRange();
+        }
+    });
+
     onKeyStroke('s', () => {
-       mapStore.editMode = MAP_MODE.SELECT;
+       appConfigStore.editMode = MAP_MODE.SELECT;
     });
     onKeyStroke('b', () => {
-       mapStore.editMode = MAP_MODE.PAINT;
+       appConfigStore.editMode = MAP_MODE.PAINT;
     });
     onKeyStroke('i', () => {
-       mapStore.editMode = MAP_MODE.SAMPLE;
+       appConfigStore.editMode = MAP_MODE.SAMPLE;
     });
     onKeyStroke('e', () => {
-       mapStore.editMode = MAP_MODE.ERASE;
+       appConfigStore.editMode = MAP_MODE.ERASE;
     });
     onKeyStroke('f', (e) => {
         fillSelection();
