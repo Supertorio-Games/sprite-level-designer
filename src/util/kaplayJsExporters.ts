@@ -1,9 +1,14 @@
 import type { kaplaySpriteAtlasConfig, mapCell, spriteSheet } from "@/types";
 import { MAP_SPRITE_IDS } from "@/config";
+import { prefixMethodName } from "./exportUtils";
+
+export interface kaplayExportOptions {
+    outputSpritePath: string,
+    kaplayOptPrefix: string
+}
 
 // TODO: Localize and Expand on the code commenting
 export const CODE_PREFIX_COMMENT = `// Level Definition and Config for use in the KaplayJS game framework \n`;
-export const ADD_LEVEL_CODE = `addLevel(levelMap, levelConfig);\n\n`
 
 export const parseMapGridForExport = (mapGrid: mapCell[][], mapWidth: number, mapHeight: number) => {
     const usedSpriteKeys = new Array<string>();
@@ -70,13 +75,13 @@ export const parseSpriteSheetsForExport = (spriteSheets: spriteSheet[], spriteMa
 };
 
 
-export const formatSpriteAtlasConfig = (config: Record<string, kaplaySpriteAtlasConfig>) :string => {
+export const formatSpriteAtlasConfig = (config: Record<string, kaplaySpriteAtlasConfig>, options: kaplayExportOptions) :string => {
     let output = '';
 
     Object.keys(config).forEach(key => {
         const sheetConfig = config[key];
 
-        output += `loadSpriteAtlas("${sheetConfig.imageURL}", {\n`;
+        output += `${prefixMethodName('loadSpriteAtlas', options.kaplayOptPrefix)}("${options.outputSpritePath}${sheetConfig.imageURL}", {\n`;
         sheetConfig.sprites.forEach(sprite => {
             output +=  `    ${sprite.name}: {\n`+
                        `      x: ${sprite.x},\n`+
@@ -102,16 +107,15 @@ export const formatLevelMap = (asciMap: string[]) :string => {
     return output;
 }
 
-export const formatLevelConfig = (spriteMapKeys: Record<string, [number, number]>, spriteSheets: spriteSheet[]): string => {
+export const formatLevelConfig = (spriteMapKeys: Record<string, [number, number]>, spriteSheets: spriteSheet[], options:kaplayExportOptions): string => {
 
     const formatConfigSprite = (asciKey:string, name: string, collisions = false, solid = false, tags: string[] = []) => {
 
         let spriteOutput = `        "${asciKey}": () => [\n` +
-                           `            sprite("${name}"),\n` +
-                           `            origin("bot"),\n`;
+                           `            ${prefixMethodName('sprite', options.kaplayOptPrefix)}("${name}"),\n`;
 
-        if (collisions) spriteOutput += `            area(),\n`;
-        if (solid) spriteOutput += `            body(),\n`;
+        if (collisions) spriteOutput += `            ${prefixMethodName('area', options.kaplayOptPrefix)}(),\n`;
+        if (solid) spriteOutput += `            ${prefixMethodName('body', options.kaplayOptPrefix)}(),\n`;
         
         tags.forEach(tag => {
             spriteOutput += `            "${tag}",\n`;
@@ -138,3 +142,8 @@ export const formatLevelConfig = (spriteMapKeys: Record<string, [number, number]
 
     return output;
 };
+
+export const formatAddLevelConfig = (options: kaplayExportOptions) => {
+    return `${prefixMethodName('addLevel', options.kaplayOptPrefix)}(levelMap, levelConfig);\n\n`
+};
+

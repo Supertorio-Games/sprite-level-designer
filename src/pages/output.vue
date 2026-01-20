@@ -36,15 +36,24 @@
             <v-tab value="kaplay">Kaplay.JS</v-tab>
             <v-tab value="phaser">Phaser.JS</v-tab>
         </v-tabs>
-        
+         <v-tabs-window v-model="tab">
+            <v-tabs-window-item value="kaplay">
+                <kaplay-export-options />
+            </v-tabs-window-item>
+            <v-tabs-window-item value="phaser">
+                <div></div>
+            </v-tabs-window-item>
+        </v-tabs-window>
       </v-navigation-drawer>
 
   </v-app>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
-  const tab = ref('kaplay')
+    import { ref } from 'vue'
+    import KaplayExportOptions from '@/components/Output/KaplayExportOptions.vue';
+    
+    const tab = ref('kaplay')
 </script>
 
 <style lang="css">
