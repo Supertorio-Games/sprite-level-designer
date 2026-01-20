@@ -1,7 +1,7 @@
 <template>
         <v-expansion-panels>
             <v-expansion-panel>
-                <v-expansion-panel-title>Grid Settings</v-expansion-panel-title>
+                <v-expansion-panel-title>Map Display Settings</v-expansion-panel-title>
                 <v-expansion-panel-text>
                     <v-list>
                         <v-list-item>
@@ -31,7 +31,7 @@
                         <v-list-item>
                             <v-text-field
                                 v-model="appConfigStore.gridLineColor"
-                                label="Grid Line COlor">
+                                label="Grid Line Color">
                             </v-text-field>
                         </v-list-item>
                     </v-list>

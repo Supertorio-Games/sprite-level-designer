@@ -156,37 +156,36 @@ const cellClasses = computed(() => {
     }
 
     .map-grid-cell.gridded::before {
-        border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+        border-color: rgba(var(--grid-line-color), var(--v-border-opacity));
         border-width: thin;
     }
 
     .map-grid-cell:hover::before {
-        border-color: rgba(var(--v-border-color), 0.8);
+        border-color: rgba(var(--grid-line-color), 0.8);
     }
 
     .map-grid-cell.selection-start-row {
         border-top-style: dashed;
-        border-top-color: white;
+        border-top-color: rgb(var(--grid-line-color));
         border-top-width: thin;
     }
 
     .map-grid-cell.selection-end-row {
         border-bottom-style: dashed;
-        border-bottom-color: white;
+        border-bottom-color: rgb(var(--grid-line-color));
         border-bottom-width: thin;
     }
 
     .map-grid-cell.selection-start-col{
         border-left-style: dashed;
-        border-left-color: white;
+        border-left-color: rgb(var(--grid-line-color));
         border-left-width: thin;
     }
 
     .map-grid-cell.selection-end-col{
         border-right-style: dashed;
-        border-right-color: white;
+        border-right-color: rgb(var(--grid-line-color));
         border-right-width: thin;
     }
-
 
 </style>

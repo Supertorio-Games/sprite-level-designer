@@ -21,6 +21,7 @@
     import { useSpritesStore } from '@/state/spritesStore';
     import { type cellPos } from '@/types';
     import { MAP_MODE, useAppStore } from '@/state/appStore';
+    import { hexToRgb } from '@/util/graphicsUtils';
 
     const appConfigStore = useAppStore();
     const mapStore = useMapStore();
@@ -75,6 +76,7 @@
             'width': mapWidth, 
             'height':mapHeight,
             '--cell-size': cellDisplaySize.value + "px",
+            '--grid-line-color': hexToRgb(appConfigStore.gridLineColor), 
             ...sheetVars
         }
     });
