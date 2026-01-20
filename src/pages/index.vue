@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <settings-modal activator="#activator-settings"></settings-modal>
     <v-app-bar>
     <template v-slot:prepend>
       <v-btn class="v-btn--icon" href="https://www.supertorio.dev/" target="_blank">
@@ -12,8 +11,10 @@
 
     <template v-slot:append>
       <v-btn to="/output" prepend-icon="mdi-code-braces" variant="tonal">Display Code</v-btn>
-      <display-settings-menu />
-      <v-btn icon="mdi-cog" value="Settings" id="activator-settings"></v-btn>
+      <v-btn icon="mdi-cog"
+        class="ml-4"
+        value="Settings"
+        @click.stop="appConfigStore.toolbarOpen = !appConfigStore.toolbarOpen"></v-btn>
     </template>
     </v-app-bar>
 
@@ -23,10 +24,21 @@
         <sprite-management-pane />
       </div>
     </v-main>
+    <v-navigation-drawer
+        location="right"
+        v-model="appConfigStore.toolbarOpen"
+      >
+        <settings-toolbar />
+      </v-navigation-drawer>
   </v-app>
 </template>
 
 <script lang="ts" setup>
+  import {ref} from 'vue';
+  import SettingsToolbar from '@/components/SettingsToolbar.vue';
+  import { useAppStore } from '@/state/appStore';
+
+  const appConfigStore = useAppStore();
 </script>
 
 <style lang="css" scoped>

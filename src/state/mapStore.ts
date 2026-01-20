@@ -1,20 +1,13 @@
-import type { cellPos, mapCell } from '@/types';
+import { computed, ref, reactive, watch } from 'vue'
 import { defineStore, type StateTree } from 'pinia'
-import { computed, ref, reactive, watch, toRaw } from 'vue'
+import { DEFAULT_CELL_SIZE, DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT } from '@/config';
+import type { cellPos, mapCell } from '@/types';
 
 const StoreName = "levelMap";
-
-export enum MAP_MODE {SELECT = 0, PAINT = 1, SAMPLE = 2, ERASE = 3};
 
 const defaultMapCell: mapCell = {
     sprite: null,
 }
-
-const DEFAULT_CELL_SIZE = 64;
-const DEFAULT_MAP_WIDTH = 30;
-const DEFAULT_MAP_HEIGHT = 10;
-const DEFAULT_MAP_SCALE = 1;
-const DEFAULT_MAP_BACKGROUND = "#000000";
 
 /**
  * NOTE: The persistance plugin has a limititation around rehydrating deeply reactive objects.
@@ -39,8 +32,6 @@ export const useMapStore = defineStore(StoreName, () => {
     const cellSize = ref<number>(DEFAULT_CELL_SIZE);
     const mapWidth = ref<number>(DEFAULT_MAP_WIDTH);
     const mapHeight = ref<number>(DEFAULT_MAP_HEIGHT);
-    const mapScale = ref<number>(DEFAULT_MAP_SCALE);
-    const mapBackground = ref<string>(DEFAULT_MAP_BACKGROUND);
 
     const selectionStart = ref<cellPos| null>(null);
     const selectionEnd = ref<cellPos | null>(null);
@@ -48,9 +39,6 @@ export const useMapStore = defineStore(StoreName, () => {
     // This is used to trigger a persistance update after the deeply reactive mapGrid changes.
     // Watchers on mapWidth and mapHeight will toggle this value to force a save after the grid has been resized.
     const persistTrigger = ref<boolean>(false);
-
-    // View options
-    const enableGrid = ref<boolean>(true);
 
     // Stored Grid Contents
     const mapGrid = reactive<mapCell[][]>([]);
@@ -77,16 +65,8 @@ export const useMapStore = defineStore(StoreName, () => {
 
     initializeGrid(mapWidth.value, mapHeight.value);
 
-    // Editor State
-    const editMode = ref<MAP_MODE>(MAP_MODE.SELECT);
 
     // Watchers
-
-    watch(editMode, (newMode) => {
-        if (newMode !== MAP_MODE.SELECT) {
-            clearSelectionRange();
-        }
-    });
 
     watch(mapWidth, (newWidth, oldWidth) => {
         if (newWidth > oldWidth) {
@@ -143,8 +123,6 @@ export const useMapStore = defineStore(StoreName, () => {
     });
 
     // Getters
-
-    const cellDisplaySize = computed(() => cellSize.value * mapScale.value);
     
     const getCell = (row: number, col: number) => {
         row--; col--;
@@ -221,15 +199,10 @@ export const useMapStore = defineStore(StoreName, () => {
         cellSize,
         mapWidth,
         mapHeight,
-        mapScale,
-        mapBackground,
         selectionStart,
         selectionEnd,
-        enableGrid,
         mapGrid,
         mapGridRef,
-        cellDisplaySize,
-        editMode,
         getCell,
         getCellByIndex,
         hasSelectionRange,
