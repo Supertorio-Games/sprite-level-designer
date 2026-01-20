@@ -22,6 +22,7 @@
     import { type cellPos } from '@/types';
     import { MAP_MODE, useAppStore } from '@/state/appStore';
     import { hexToRgb } from '@/util/graphicsUtils';
+import { DEFAULT_GRID_COLOR } from '@/config';
 
     const appConfigStore = useAppStore();
     const mapStore = useMapStore();
@@ -76,7 +77,7 @@
             'width': mapWidth, 
             'height':mapHeight,
             '--cell-size': cellDisplaySize.value + "px",
-            '--grid-line-color': hexToRgb(appConfigStore.gridLineColor), 
+            '--grid-line-color': hexToRgb(appConfigStore.gridLineColor) || DEFAULT_GRID_COLOR, 
             ...sheetVars
         }
     });
