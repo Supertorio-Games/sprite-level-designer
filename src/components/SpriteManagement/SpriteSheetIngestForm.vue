@@ -1,5 +1,5 @@
 <template>
-    <v-dialog max-width="500" v-model="dialogOpen">
+    <v-dialog max-width="500" v-model="appStore.ingestFormOpen">
             <v-card :title="$t('spriteIngestForm.title')">
             <v-card-text>
                 <v-file-input 
@@ -23,7 +23,7 @@
                 </v-btn>
                 <v-btn
                     :text="$t('misc.btnClose')"
-                    @click="$emit('onClose')"
+                    @click="appStore.closeIngestForm"
                 ></v-btn>
             </v-card-actions>
             </v-card>
@@ -32,20 +32,15 @@
 
 
 <script setup lang="ts">
-    import { ref, watch } from 'vue';
+    import { ref } from 'vue';
     import { useSpritesStore } from '@/state/spritesStore';
+    import { useAppStore } from '@/state/appStore';
     import SpriteSheetIngest from '@/util/spriteSheetIngest';
 
-    const dialogOpen = ref<boolean>(false);
-    const props = defineProps(['showDialog']);
-    const emit = defineEmits(['onClose']);
     const spritesIngest = new SpriteSheetIngest();
 
     const spriteStore = useSpritesStore();
-
-    watch(() => props.showDialog, (newValue) => {
-        dialogOpen.value = newValue;
-    });
+    const appStore = useAppStore();
 
     const spritesInput = ref<File>();
     const configInput = ref<File>();
@@ -70,12 +65,12 @@
         await spritesIngest.processSpriteSheet(spritesInput.value!, configInput.value!).then(
             ({ spriteImageData, width, height, spriteImageConfig }) => {
                 spriteStore.addSpriteSheet(spriteImageData, width, height, spriteImageConfig);
-                emit("onClose");
+                appStore.closeIngestForm();
             }
         ).catch(
             (error) => {
                 console.error("Error processing sprite sheet:", error);
-                emit("onClose");
+                appStore.closeIngestForm();
             }
         );
     }

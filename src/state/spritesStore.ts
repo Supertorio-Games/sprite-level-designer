@@ -8,7 +8,8 @@ export const useSpritesStore = defineStore(StoreName, () => {
     const spriteSheets = ref<spriteSheet[]>([]);
     const selectedSheetId = ref<number>(-1);
     const selectedSpriteImageId = ref<number>(-1);
-    const nextSheetID = () => spriteSheets.value.length;
+
+    const nextSheetID = () => spriteSheets.value.reduce((acc, sheet) => sheet._id > acc ? sheet._id : acc, -1) + 1;
 
     const addSpriteSheet = (imageData: string, width: number, height: number, config: sheetConfig) => {
         config.SubTexture.forEach((texture, index) => {
@@ -65,6 +66,11 @@ export const useSpritesStore = defineStore(StoreName, () => {
         return sprite[0];
     };
 
+    const removeSpriteSheet = (sheetId: number) => {
+        const sheetIndex = spriteSheets.value.findIndex((sheet:spriteSheet) => sheet._id == sheetId);
+        spriteSheets.value.splice(sheetIndex, 1);
+    }
+
     return { 
         spriteSheets,
         hasSheets,
@@ -74,6 +80,7 @@ export const useSpritesStore = defineStore(StoreName, () => {
         findSpriteSheet,
         findSprite,
         setSelectedSprite,
+        removeSpriteSheet,
     };
 
 }, {

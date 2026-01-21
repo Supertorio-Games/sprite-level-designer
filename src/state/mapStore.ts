@@ -181,7 +181,7 @@ export const useMapStore = defineStore(StoreName, () => {
     const clearSpritesFromSelection = () => {
         if (!hasSelectionRange.value) return;
 
-         for (let r = cellSelectionRange.value!.start.row; r <= cellSelectionRange.value!.end.row; r++) {
+        for (let r = cellSelectionRange.value!.start.row; r <= cellSelectionRange.value!.end.row; r++) {
             for (let c = cellSelectionRange.value!.start.col; c <= cellSelectionRange.value!.end.col; c++) {
                 clearTileSprite(r, c);
             }
@@ -192,6 +192,21 @@ export const useMapStore = defineStore(StoreName, () => {
     const clearSelectionRange = () => {
         selectionStart.value = null;
         selectionEnd.value = null;
+    }
+
+    const clearSpriteSheetFromMap = (spriteSheetID: number) => {
+        for (let r = 0; r <= mapGrid.length; r++) {
+            if (!mapGrid[r]) continue;
+            for (let c = 0; c <= mapGrid[r].length; c++) {
+                if (!mapGrid[r][c] || !mapGrid[r][c]?.sprite) continue;
+
+                const row = r+1, col = c+1;
+                const cellSprite = getCell(row, col).sprite;
+                if ( cellSprite && cellSprite[0] == spriteSheetID) {
+                    clearTileSprite(row, col);
+                }
+            }
+        }
     }
 
 
@@ -212,6 +227,7 @@ export const useMapStore = defineStore(StoreName, () => {
         clearSpritesFromSelection,
         clearTileSprite,
         clearSelectionRange,
+        clearSpriteSheetFromMap,
     };
 
 }, {
