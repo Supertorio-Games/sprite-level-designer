@@ -33,7 +33,7 @@
                         <v-list-item>
                             <v-text-field
                                 v-model="appConfigStore.gridLineColor"
-                                l:abel="$t('settings.gridLinesColor')"
+                                :label="$t('settings.gridLinesColor')"
                                 density="compact">
                             </v-text-field>
                         </v-list-item>
