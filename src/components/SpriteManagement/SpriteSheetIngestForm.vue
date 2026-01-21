@@ -1,14 +1,14 @@
 <template>
     <v-dialog max-width="500" v-model="dialogOpen">
-            <v-card title="Add New Sprite Sheet">
+            <v-card :title="$t('spriteIngestForm.title')">
             <v-card-text>
                 <v-file-input 
-                    label="Sprite Sheet" 
+                    :label="$t('spriteIngestForm.sheetFileLabel')" 
                     :multiple="false"
                     accept=".jpg, .png"
                     @update:model-value="onSpriteFileChanged"></v-file-input>
                 <v-file-input 
-                    label="Sheet Config XML" 
+                    :label="$t('spriteIngestForm.configFileLabel')" 
                     :multiple="false"
                     accept=".xml"
                     @update:model-value="onConfigFileChanged"></v-file-input>
@@ -19,10 +19,10 @@
                 <v-btn
                     variant="tonal" 
                     @click="processSpriteSheet">
-                    Load Sprite Sheet
+                    {{ $t('spriteIngestForm.loadSubmitButton') }}
                 </v-btn>
                 <v-btn
-                    text="Close Dialog"
+                    :text="$t('misc.btnClose')"
                     @click="$emit('onClose')"
                 ></v-btn>
             </v-card-actions>

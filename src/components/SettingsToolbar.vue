@@ -1,45 +1,46 @@
 <template>
         <v-expansion-panels>
             <v-expansion-panel>
-                <v-expansion-panel-title>Map Configuration</v-expansion-panel-title>
+                <v-expansion-panel-title>{{ $t('settings.mapConfig') }}</v-expansion-panel-title>
                 <v-expansion-panel-text>
                     <v-list class="panel-list" density="compact">
                         <v-list-item>
                             <v-slider
                                 v-model="appConfigStore.mapScale"
-                                label="Map Scale"
+                                :label="$t('settings.mapScale')"
                                 :max="maxScale"
                                 :min="minScale"
                                 class="align-center"
                                 hide-details
+                                density="compact"   
                                 >
                             </v-slider>
                         </v-list-item>
                         <v-list-item>
                             <v-switch
                                 v-model="appConfigStore.enableGridLines"
-                                label="Enable Grid Lines"
+                                :label="$t('settings.enableGridLines')"
                                 hide-details
                             ></v-switch>
                         </v-list-item>
                         <v-list-item>
                             <v-text-field
                                 v-model="appConfigStore.mapBackgroundColor"
-                                label="Background Color"
+                                :label="$t('settings.backgroundColor')"
                                 density="compact">
                             </v-text-field>
                         </v-list-item>
                         <v-list-item>
                             <v-text-field
                                 v-model="appConfigStore.gridLineColor"
-                                label="Grid Line Color"
+                                l:abel="$t('settings.gridLinesColor')"
                                 density="compact">
                             </v-text-field>
                         </v-list-item>
                         <v-list-item>
                             <v-text-field
                                 v-model="mapStore.cellSize"
-                                label="Base Cell Size"
+                                :label="$t('settings.cellSize')"
                                 density="compact">
                             </v-text-field>
                         </v-list-item>

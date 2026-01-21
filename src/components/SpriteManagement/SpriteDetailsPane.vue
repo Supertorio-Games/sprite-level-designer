@@ -6,7 +6,7 @@
                 <div class="sprite-display">
                     <div :style="getSpriteSwatchStyle(selectedSprite)"></div>
                 </div>
-                <v-list :items="items"></v-list>
+                <v-list :items="items" density="compact"></v-list>
             </div>
         </div>
     </div>
@@ -17,7 +17,9 @@
     import { storeToRefs } from "pinia";
     import { useSpritesStore } from "@/state/spritesStore";
     import type {subTexture} from "@/types";
+    import { useI18n } from "vue-i18n";
 
+    const { t } = useI18n({ useScope: "global" });
     const spriteStore = useSpritesStore();
     const { selectedSprite } = storeToRefs(spriteStore);
 
@@ -32,25 +34,25 @@
 
     const items = computed(() => !selectedSprite ? [] : [
         {
-            title: 'Width: ' + spriteStore.selectedSprite?.sprite.width + 'px',
+            title: t('spriteInfo.width', {value: spriteStore.selectedSprite?.sprite.width.toString()}),
             props: {
                 prependIcon: 'mdi-arrow-expand-horizontal',
             },
         },
         {
-            title: 'Height: ' + spriteStore.selectedSprite?.sprite.height + 'px',
+            title: t('spriteInfo.height', {value: spriteStore.selectedSprite?.sprite.height.toString()}),
             props: {
                 prependIcon: 'mdi-arrow-expand-vertical',
             },
         },
         {
-            title: 'Pos X: ' + spriteStore.selectedSprite?.sprite.x + 'px',
+            title: t('spriteInfo.posX', {value: spriteStore.selectedSprite?.sprite.x.toString()}),
             props: {
                 prependIcon: 'mdi-arrow-left-right',
             },
         },
         {
-            title: 'Pos Y: ' + spriteStore.selectedSprite?.sprite.y + 'px',
+            title: t('spriteInfo.posY', {value: spriteStore.selectedSprite?.sprite.y.toString()}),
             props: {
                 prependIcon: 'mdi-arrow-up-down',
             },
