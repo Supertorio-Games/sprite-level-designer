@@ -3,6 +3,7 @@ import { MAP_SPRITE_IDS } from "@/config";
 import { prefixMethodName } from "./exportUtils";
 
 export interface kaplayExportOptions {
+    baseTileSize: number,
     outputSpritePath: string,
     kaplayOptPrefix: string
 }
@@ -126,8 +127,8 @@ export const formatLevelConfig = (spriteMapKeys: Record<string, [number, number]
     }
 
     let output = `const levelConfig = {\n` + 
-                 `    tileWidth: 32,\n` +
-                 `    tileHeight: 32,\n` + 
+                 `    tileWidth: ${options.baseTileSize},\n` +
+                 `    tileHeight: ${options.baseTileSize},\n` + 
                  `    tiles: {\n`;
     
     Object.keys(spriteMapKeys).forEach(key => {

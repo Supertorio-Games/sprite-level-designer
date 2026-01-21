@@ -26,11 +26,11 @@
 
     const kaplayOptions = computed<kaplayExportOptions >(() => {
         return {
+            baseTileSize: mapStore.cellSize,
             outputSpritePath: configStore.outputSpritePath,
             kaplayOptPrefix: configStore.kaplayOptPrefix
         };
     })
-
 
     const processMapData = () => {
         let mapExportData = parseMapGridForExport(mapStore.mapGrid, mapStore.mapWidth, mapStore.mapHeight);
