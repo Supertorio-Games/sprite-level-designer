@@ -1,5 +1,5 @@
 <template>
-    <sprite-sheet-ingest-form :showDialog="showIngestFormDialog" @on-close="showIngestFormDialog = false"  />
+    <sprite-sheet-ingest-form />
     <v-toolbar border density="compact" class="flex-0-0">
         <template v-slot:default>
             <div class="toolbar-contents">
@@ -15,7 +15,7 @@
         <template v-slot:append>
             <v-btn 
             prepend-icon="mdi-plus-circle"
-            @click="showIngestFormDialog = true"
+            @click="openIngestForm"
             >{{ $t('navigation.actionAddSpriteSheet') }}</v-btn>
         </template>
     </v-toolbar>
@@ -23,9 +23,10 @@
 
 <script setup lang="ts">
     import { useMapStore } from '@/state/mapStore';
-    import { ref } from 'vue'
-    const showIngestFormDialog = ref(false)
+    import { useAppStore } from '@/state/appStore';
+
     const mapStore = useMapStore();
+    const { openIngestForm } = useAppStore();
 </script>
 
 <style scoped>

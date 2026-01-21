@@ -18,6 +18,7 @@ import type { App } from 'vue'
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
+// TODO: Externalize Messages
 const i18n = createI18n({
   locale: 'en',
   fallbackLocale: 'en',
@@ -29,7 +30,8 @@ const i18n = createI18n({
         toMapEditor: 'Edit Map',
         tabKaplay: 'Kaplay.JS',
         tabPhaser: 'Phaser.JS',
-        actionAddSpriteSheet: 'Add Spritesheet',
+        actionAddSpriteSheet: 'Add Sprite Sheet',
+        btnCancel: 'Cancel',
       },
       settings: {
         mapConfig: 'Map Configuration',
@@ -65,7 +67,10 @@ const i18n = createI18n({
         posY: 'Pos Y: {value}px',
       },
       message: {
-        addSpriteSheet: 'Add a Sprite Sheet'
+        addSpriteSheet: 'Add a Sprite Sheet',
+        removeSpriteSheetTitle: 'Are you sure?',
+        removeSpriteSheetMessage: 'The sprite sheet will be deleted and these sprites will be removed from the map.',
+        removeSpriteSheetAction: 'Remove Sprite Sheet',
       },
       misc: {
         phaserComingSoon: '"// Phaser Code Coming Soon"',

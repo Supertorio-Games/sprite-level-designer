@@ -13,7 +13,7 @@
                         <h2 class="text-h4 mb-4">{{ $t('message.addSpriteSheet') }}</h2>
                         <v-btn 
                             prepend-icon="mdi-plus-circle"
-                            @click="showIngestFormDialog = true"
+                            @click="openIngestForm"
                             >{{ $t('navigation.actionAddSpriteSheet') }}</v-btn>
                     </div>
                 </div>
@@ -30,10 +30,11 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue'
     import { useSpritesStore } from '@/state/spritesStore';    
-    const showIngestFormDialog = ref(false)
+    import { useAppStore } from '@/state/appStore';
     const spritesStore = useSpritesStore();
+    const { openIngestForm } = useAppStore();
+
 </script>
 
 
