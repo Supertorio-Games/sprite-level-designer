@@ -1,9 +1,9 @@
 <template>
         <v-expansion-panels>
             <v-expansion-panel>
-                <v-expansion-panel-title>Map Display Settings</v-expansion-panel-title>
+                <v-expansion-panel-title>Map Configuration</v-expansion-panel-title>
                 <v-expansion-panel-text>
-                    <v-list>
+                    <v-list class="panel-list" density="compact">
                         <v-list-item>
                             <v-slider
                                 v-model="appConfigStore.mapScale"
@@ -25,13 +25,22 @@
                         <v-list-item>
                             <v-text-field
                                 v-model="appConfigStore.mapBackgroundColor"
-                                label="Background Color">
+                                label="Background Color"
+                                density="compact">
                             </v-text-field>
                         </v-list-item>
                         <v-list-item>
                             <v-text-field
                                 v-model="appConfigStore.gridLineColor"
-                                label="Grid Line Color">
+                                label="Grid Line Color"
+                                density="compact">
+                            </v-text-field>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-text-field
+                                v-model="mapStore.cellSize"
+                                label="Base Cell Size"
+                                density="compact">
                             </v-text-field>
                         </v-list-item>
                     </v-list>
@@ -43,10 +52,18 @@
 <script lang="ts" setup>
     import { ref } from 'vue';
     import { useAppStore } from '@/state/appStore';
+    import { useMapStore } from '@/state/mapStore';
 
     const appConfigStore = useAppStore();
+    const mapStore = useMapStore();
 
     const minScale = ref(0.1);
     const maxScale = ref(2);
 
 </script>
+
+<style lang="css" scoped>
+    .v-list-item--density-compact:not(.v-list-item--nav).v-list-item--one-line {
+        padding-inline: 0;
+    }
+</style>
