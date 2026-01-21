@@ -10,11 +10,11 @@
 
                 <div class="h-100 2-100 d-flex flex-row justify-center align-center pa-5" v-if="!spritesStore.hasSheets">
                     <div class="empty-action-prompt border pa-5 text-center">
-                        <h2 class="text-h4 mb-4">Add a Sprite Sheet</h2>
+                        <h2 class="text-h4 mb-4">{{ $t('message.addSpriteSheet') }}</h2>
                         <v-btn 
                             prepend-icon="mdi-plus-circle"
                             @click="showIngestFormDialog = true"
-                            >Add Spritesheet</v-btn>
+                            >{{ $t('navigation.actionAddSpriteSheet') }}</v-btn>
                     </div>
                 </div>
 
@@ -55,5 +55,4 @@
     .empty-action-prompt {
         flex: 0 1 40%;
     }
-    
 </style>

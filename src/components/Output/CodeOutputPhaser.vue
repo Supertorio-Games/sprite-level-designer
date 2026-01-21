@@ -12,6 +12,8 @@
 <script lang="ts" setup>
     import { ref } from 'vue';
     import VCodeBlock from '@wdns/vue-code-block';
+    import { useI18n } from "vue-i18n";
 
-    const code = ref("// Phaser Code Coming Soon");
+    const { t } = useI18n({ useScope: "global" });
+    const code = ref(t("misc.phaserComingSoon"));
 </script>

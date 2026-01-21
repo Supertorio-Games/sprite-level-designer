@@ -1,17 +1,28 @@
-# Sprite Level Designer
+# 🗺️ Kaplayer: The Web-Based Map Designer for 2D Game Devs
 
-A web based tool for creating sprite based level maps.
+Designing 2D levels shouldn't involve manual coordinate math. Kaplayer is an open-source, browser-based map editor that turns visual sprite based level design into ready-to-use code for web game engines.
 
-## 💿 Install
+Try it out here: https://supertorio-games.github.io/sprite-level-designer/
+
+## 🚀 Why Kaplayer?
+- **Zero Setup:** No installation. Open your browser and start building.
+- **Visual-First:** Select and paint your sprites onto a map grid.
+- **Engine Ready:** One-click code copy for KaplayJS (with PhaserJS support coming soon).
+- **Open Source:** Cusomizable for your own projects needs
+
+## 🛠️ How it works:
+1. Load your spritesheet & corresponding xml file.
+2. Paint your level with intuitive grid tools.
+3. Copy the generated code block for your engine
+4. Paste directly into your project and watch your world come to life.
+
+## 💿 Local Install
 
 Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
 
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
+```bash
+npm install
+```
 
 
 ## 💡 Usage
@@ -26,10 +37,6 @@ To start the development server with hot-reload, run the following command. The 
 npm dev
 ```
 
-(Repeat for yarn, pnpm, and bun with respective commands.)
-
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
-
 ### Building for Production
 
 To build your project for production, use:
@@ -37,8 +44,6 @@ To build your project for production, use:
 ```bash
 npm build
 ```
-
-(Repeat for yarn, pnpm, and bun with respective commands.)
 
 Once the build process is completed, your application will be ready for deployment in a production environment.
 

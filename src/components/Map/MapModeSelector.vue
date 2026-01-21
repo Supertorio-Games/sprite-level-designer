@@ -7,22 +7,22 @@
             rounded
             density="comfortable"
             variant="tonal" >
-            <v-tooltip text="Select (s)" location="top">
+            <v-tooltip :text="$t('tools.selectModeToolTip')" location="top">
                 <template v-slot:activator="{ props }">
                     <v-btn icon="mdi-cursor-default"  v-bind="props"></v-btn>
                 </template>
             </v-tooltip>
-            <v-tooltip text="Brush (b)" location="top">
+            <v-tooltip :text="$t('tools.brushModeToolTip')" location="top">
                 <template v-slot:activator="{ props }">
                     <v-btn icon="mdi-brush" v-bind="props"></v-btn>
                 </template>
             </v-tooltip>
-            <v-tooltip text="Eyedropper (I)" location="top">
+            <v-tooltip :text="$t('tools.eyedropperToolTip')" location="top">
                 <template v-slot:activator="{ props }">
                     <v-btn icon="mdi-eyedropper" v-bind="props"></v-btn>
                 </template>
             </v-tooltip>
-            <v-tooltip text="Erase (e)" location="top">
+            <v-tooltip :text="$t('tools.eraserToolTip')" location="top">
                 <template v-slot:activator="{ props }">
                     <v-btn icon="mdi-eraser" v-bind="props"></v-btn>
                 </template>
@@ -34,12 +34,12 @@
             rounded
             density="comfortable"
             variant="tonal">
-            <v-tooltip text="Fill Selection (f)" location="top">
+            <v-tooltip :text="$t('tools.fillSelectionToolTip')" location="top">
                 <template v-slot:activator="{ props }">
                     <v-btn @click="fillSelection" v-bind="props" icon="mdi-format-color-fill" :disabled="!mapStore.hasSelectionRange || !spriteStore.selectedSpriteID"></v-btn>
                 </template>
             </v-tooltip>
-            <v-tooltip text="Clear Selection (x)" location="top">
+            <v-tooltip :text="$t('tools.clearSelectionToolTip')" location="top">
                 <template v-slot:activator="{ props }">
                     <v-btn @click="clearSelection" v-bind="props" icon="mdi-water-remove"  :disabled="!mapStore.hasSelectionRange"></v-btn>
                 </template>
@@ -87,13 +87,13 @@
     onKeyStroke('e', () => {
        appConfigStore.editMode = MAP_MODE.ERASE;
     });
-    onKeyStroke('f', (e) => {
+    onKeyStroke('f', () => {
         fillSelection();
     });
-    onKeyStroke('x', (e) => {
+    onKeyStroke('x', () => {
        clearSelection();
     });
-    onKeyStroke('Escape', (e) => {
+    onKeyStroke('Escape', () => {
        mapStore.clearSelectionRange();
     });
  

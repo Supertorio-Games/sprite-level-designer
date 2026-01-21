@@ -7,10 +7,10 @@
       </v-btn>
     </template>
 
-    <v-app-bar-title>Sprite Level Designer</v-app-bar-title>
+    <v-app-bar-title>{{ $t('navigation.title') }}</v-app-bar-title>
 
     <template v-slot:append>
-      <v-btn to="/output" prepend-icon="mdi-code-braces" variant="tonal">Display Code</v-btn>
+      <v-btn to="/output" prepend-icon="mdi-code-braces" variant="tonal">{{ $t('navigation.toCodeDisplay') }}</v-btn>
       <v-btn icon="mdi-cog"
         class="ml-4"
         value="Settings"

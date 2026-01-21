@@ -7,10 +7,10 @@
         </v-btn>
         </template>
 
-        <v-app-bar-title>Sprite Level Designer</v-app-bar-title>
+        <v-app-bar-title>{{ $t('navigation.title') }}</v-app-bar-title>
 
         <template v-slot:append>
-        <v-btn to="/" class="mr-5" prepend-icon="mdi-map-outline" variant="tonal">Edit Map</v-btn>
+        <v-btn to="/" class="mr-5" prepend-icon="mdi-map-outline" variant="tonal">{{ $t('navigation.toMapEditor') }}</v-btn>
         </template>
     </v-app-bar>
 
@@ -33,8 +33,8 @@
             color="primary" 
             grow
             v-model="tab">
-            <v-tab value="kaplay">Kaplay.JS</v-tab>
-            <v-tab value="phaser">Phaser.JS</v-tab>
+            <v-tab value="kaplay">{{ $t('navigation.tabKaplay') }}</v-tab>
+            <v-tab value="phaser">{{ $t('navigation.tabPhaser') }}</v-tab>
         </v-tabs>
          <v-tabs-window v-model="tab">
             <v-tabs-window-item value="kaplay">
@@ -57,8 +57,7 @@
 </script>
 
 <style lang="css">
-.code-contents > div {
-    height: 100%;
-}
-
+    .code-contents > div {
+        height: 100%;
+    }
 </style>

@@ -5,9 +5,9 @@
             <div class="toolbar-contents">
                 <map-mode-selector></map-mode-selector>
                 <form class="map-size-controls">
-                    <span>Map Size: </span>
+                    <span>{{ $t('tools.mapSizeLabel') }} </span>
                     <input name="grid-width" type="number" v-model="mapStore.mapWidth" /> 
-                    <span>X</span> 
+                    <span>{{ $t('tools.mapSizeDimensionsSeparator') }}</span> 
                     <input  name="grid-height" type="number" v-model="mapStore.mapHeight" />
                 </form>
             </div>
@@ -16,7 +16,7 @@
             <v-btn 
             prepend-icon="mdi-plus-circle"
             @click="showIngestFormDialog = true"
-            >Add Spritesheet</v-btn>
+            >{{ $t('navigation.actionAddSpriteSheet') }}</v-btn>
         </template>
     </v-toolbar>
 </template>
