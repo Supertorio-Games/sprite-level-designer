@@ -2,28 +2,65 @@
     <div class="sprite-details-drawer v-theme--dark">
         <div class="sprite-details-drawer__content">
             <div v-if="selectedSprite">
-                <h3 class="text-h5">Selected Sprite</h3>
-                <div class="sprite-display">
-                    <div :style="getSpriteSwatchStyle(selectedSprite)"></div>
+                <div class="sprite-config">
+                    <h3 class="text-h7">Selected Sprite</h3>
+                    <div class="sprite-display">
+                        <div :style="getSpriteSwatchStyle(selectedSprite)"></div>
+                    </div>
+                    <div class="block-options">
+                        <v-checkbox 
+                            v-model="selectedSprite.sprite.hasCollision"
+                            :label="t('spriteInfo.hasCollisions')" 
+                            density="compact" 
+                            :hide-details="true"></v-checkbox>
+                        <v-checkbox 
+                            v-model="selectedSprite.sprite.hasPhysics"
+                            :label="t('spriteInfo.hasPhysics')" 
+                            density="compact" 
+                            :hide-details="true"></v-checkbox>
+                        <v-checkbox 
+                            v-if="selectedSprite.sprite.hasPhysics"
+                            v-model="selectedSprite.sprite.isStatic"
+                            :label="t('spriteInfo.isStatic')" 
+                            density="compact" 
+                            :hide-details="true"></v-checkbox>
+                        <v-text-field 
+                            v-model="tags"
+                            clearable 
+                            :label="t('spriteInfo.tags')" 
+                            density="compact" 
+                            :hide-details="true">
+                        </v-text-field>
+                    </div>
                 </div>
-                <v-list :items="items" density="compact"></v-list>
+
+                <v-expansion-panels>
+                    <v-expansion-panel>
+                        <v-expansion-panel-title>{{ $t('spriteInfo.details') }}</v-expansion-panel-title>
+                        <v-expansion-panel-text>
+                            <v-list :items="items" density="compact"></v-list>
+                        </v-expansion-panel-text>
+                    </v-expansion-panel>
+                </v-expansion-panels>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { computed } from "vue";
+    import { computed, ref, watch } from "vue";
     import { storeToRefs } from "pinia";
     import { useSpritesStore } from "@/state/spritesStore";
-    import type {subTexture} from "@/types";
+    import type {sheetTexture} from "@/types";
     import { useI18n } from "vue-i18n";
 
     const { t } = useI18n({ useScope: "global" });
     const spriteStore = useSpritesStore();
     const { selectedSprite } = storeToRefs(spriteStore);
 
-    const getSpriteSwatchStyle = (spriteSelection: {spriteImage: string, sprite: subTexture}) => {
+    const tags = ref<string>();
+
+    const getSpriteSwatchStyle = (spriteSelection: {spriteImage: string, sprite: sheetTexture}) => {
         return {
             'background-image': 'url('+ spriteSelection.spriteImage + ')', 
             'width': spriteSelection.sprite.width + 'px', 
@@ -59,6 +96,18 @@
         },
     ]);
 
+    // Tags -> array to strings for input
+    watch(selectedSprite, (spriteData) => {
+        tags.value = spriteData?.sprite.tags.join(",");
+    });
+
+    // Tags -> string to array for storage
+    watch(tags, (newValue:string | undefined) => {
+        const tagsAsArray = newValue ? newValue.split(",") : [];
+        if (!selectedSprite.value) return;
+        selectedSprite.value.sprite.tags = tagsAsArray.map(t => t.trim());
+    });
+
 </script>
 
 <style lang="css" scoped>
@@ -89,7 +138,11 @@
         max-width: 100%;
         overflow-x: hidden;
         overflow-y: auto;
-        padding: 20px;
+        padding: 20px 0 0;
+    }
+
+    .sprite-config {
+        padding: 0 20px 20px;
     }
 
     .sprite-display {
