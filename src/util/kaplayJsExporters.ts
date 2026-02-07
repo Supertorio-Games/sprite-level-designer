@@ -1,4 +1,4 @@
-import type { kaplaySpriteAtlasConfig, mapCell, spriteSheet } from "@/types";
+import type { kaplaySpriteAtlasConfig, mapCell, sheetTexture, spriteSheet } from "@/types";
 import { MAP_SPRITE_IDS } from "@/config";
 import { prefixMethodName } from "./exportUtils";
 
@@ -108,21 +108,25 @@ export const formatLevelMap = (asciMap: string[]) :string => {
     return output;
 }
 
+const addPhysicsComponent = (prefix: string, isStatic = false) => {
+    const staticCode = isStatic ? `{ isStatic: true }` : '';
+    return `${prefixMethodName('body', prefix)}(${staticCode})`;
+};
+
+
 export const formatLevelConfig = (spriteMapKeys: Record<string, [number, number]>, spriteSheets: spriteSheet[], options:kaplayExportOptions): string => {
 
-    const formatConfigSprite = (asciKey:string, name: string, collisions = false, solid = false, tags: string[] = []) => {
+    const formatConfigSprite = (asciKey:string, details: sheetTexture) => {
 
-        let spriteOutput = `        "${asciKey}": () => [\n` +
-                           `            ${prefixMethodName('sprite', options.kaplayOptPrefix)}("${name}"),\n`;
-
-        if (collisions) spriteOutput += `            ${prefixMethodName('area', options.kaplayOptPrefix)}(),\n`;
-        if (solid) spriteOutput += `            ${prefixMethodName('body', options.kaplayOptPrefix)}(),\n`;
+        let spriteOutput =                          `        "${asciKey}": () => [\n` +
+                                                    `            ${prefixMethodName('sprite', options.kaplayOptPrefix)}("${details.name}"),\n`;
+        if (details.hasCollision) spriteOutput +=   `            ${prefixMethodName('area', options.kaplayOptPrefix)}(),\n`;
+        if (details.hasPhysics) spriteOutput +=     `            ${addPhysicsComponent(options.kaplayOptPrefix, details.isStatic)},\n`;
         
-        tags.forEach(tag => {
-            spriteOutput += `            "${tag}",\n`;
+        details.tags.forEach(tag => {
+            spriteOutput +=                         `            "${tag}",\n`;
         });
-
-        spriteOutput += `        ],\n`;
+        spriteOutput +=                     `        ],\n`;
         return spriteOutput;
     }
 
@@ -135,7 +139,7 @@ export const formatLevelConfig = (spriteMapKeys: Record<string, [number, number]
         const sheetIndex = spriteMapKeys[key][0];
         const spriteIndex = spriteMapKeys[key][1];
         const spriteConfig = spriteSheets[sheetIndex].config.SubTexture[spriteIndex];
-        output += formatConfigSprite(key, spriteConfig.name, true);
+        output += formatConfigSprite(key, spriteConfig);
     });
 
     output += `    }\n` + 

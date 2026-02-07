@@ -14,6 +14,10 @@ export const useSpritesStore = defineStore(StoreName, () => {
     const addSpriteSheet = (imageData: string, width: number, height: number, config: sheetConfig) => {
         config.SubTexture.forEach((texture, index) => {
             texture._id = index;
+            texture.hasCollision = false;
+            texture.hasPhysics = false;
+            texture.isStatic = false;
+            texture.tags = [];
         });
 
         const sheet : spriteSheet = {
