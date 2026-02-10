@@ -1,13 +1,43 @@
 import { computed, ref, reactive, watch } from 'vue'
 import { defineStore, type StateTree } from 'pinia'
 import { DEFAULT_CELL_SIZE, DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT } from '@/config';
-import type { cellPos, mapCell } from '@/types';
+import { type mapLayer, type cellPos, type mapCell, LayerType } from '@/types';
 
 const StoreName = "levelMap";
 
 const defaultMapCell: mapCell = {
     sprite: null,
 }
+
+const defaultLayerList: mapLayer[] = [
+    {
+        _id: 1,
+        _type: LayerType.physics,
+        _interactable: false,
+        title: 'Physics',
+        enabled: false,
+        icon: 'mdi-rocket-launch-outline',
+        stacking: 10,
+    },
+    {
+        _id: 2,
+        _type: LayerType.tile,
+        _interactable: true,
+        title: 'Layer 1',
+        enabled: true,
+        icon: 'mdi-layers-outline',
+        stacking: 1,
+    },
+    {
+        _id: 0,
+        _type: LayerType.background,
+        _interactable: false,
+        title: 'Background',
+        enabled: true,
+        icon: 'mdi-image-area',
+        stacking: 0,
+    }
+];
 
 /**
  * NOTE: The persistance plugin has a limititation around rehydrating deeply reactive objects.
@@ -44,7 +74,10 @@ export const useMapStore = defineStore(StoreName, () => {
     const mapGrid = reactive<mapCell[][]>([]);
     const mapGridRef = ref<mapCell[][]>([]); // Used for rehydration from storage only
 
-        // Initialize map grid
+    // Layers
+    const layerList = ref<mapLayer[]>(defaultLayerList);
+
+    // Initialize map grid
     const initializeGrid = (width:number, height:number, savedValues = null) => {
         mapGrid.length = 0;
 
@@ -228,6 +261,7 @@ export const useMapStore = defineStore(StoreName, () => {
         clearTileSprite,
         clearSelectionRange,
         clearSpriteSheetFromMap,
+        layerList,
     };
 
 }, {

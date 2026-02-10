@@ -34,6 +34,7 @@ const i18n = createI18n({
         btnCancel: 'Cancel',
       },
       settings: {
+        layers: 'Layers',
         mapConfig: 'Map Configuration',
         mapScale: 'Map Scale',
         enableGridLines: 'Enable Grid Lines',
@@ -61,10 +62,15 @@ const i18n = createI18n({
         loadSubmitButton: 'Load Sprite Sheet',
       },
       spriteInfo: {
+        details: 'More Details',
         width: 'Width: {value}px',
         height: 'Height: {value}px',
         posX: 'Pos X: {value}px',
         posY: 'Pos Y: {value}px',
+        hasCollisions: 'Has Collisions',
+        hasPhysics: 'Has Physics',
+        isStatic: 'Is Static',
+        tags: 'Tags',
       },
       message: {
         addSpriteSheet: 'Add a Sprite Sheet',

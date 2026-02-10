@@ -1,6 +1,5 @@
 <template>
     <div class="map-grid-cell"
-        :class="cellClasses"
         :style="cellStyles"
         @click="cellClickAction"
         @mousedown="mouseDownAction"
@@ -12,124 +11,101 @@
 </template>
 
 <script setup lang="ts">
-import { useMapStore } from '@/state/mapStore';
-import { MAP_MODE, useAppStore } from '@/state/appStore';
-import { useSpritesStore } from '@/state/spritesStore';
-import { computed } from 'vue';
+    import { useMapStore } from '@/state/mapStore';
+    import { MAP_MODE, useAppStore } from '@/state/appStore';
+    import { useSpritesStore } from '@/state/spritesStore';
+    import { computed } from 'vue';
+    import { pixelValue } from '@/util/styleUtils';
 
-const props = defineProps(['cellindex', 'row', 'col', 'selection', 'brushMode']);
-const emits = defineEmits(['selectStart', 'selectMove', 'selectEnd', 'enterBrushMode', 'exitBrushMode']);
-const mapStore = useMapStore();
-const spriteStore = useSpritesStore();
-const appConfigStore = useAppStore();
+    const props = defineProps(['cellindex', 'row', 'col', 'brushMode']);
+    const emits = defineEmits(['selectStart', 'selectMove', 'selectEnd', 'enterBrushMode', 'exitBrushMode']);
+    const mapStore = useMapStore();
+    const spriteStore = useSpritesStore();
+    const appConfigStore = useAppStore();
 
-const cellClickAction = () => {
-    if (appConfigStore.editMode == MAP_MODE.PAINT) {
-        paintCell();
-    }
-    else if (appConfigStore.editMode == MAP_MODE.SAMPLE) {
-        sampleCell();
-    }
-    else if (appConfigStore.editMode == MAP_MODE.ERASE) {
-        clearCell();
-    }
-};
+    const cellClickAction = () => {
+        if (appConfigStore.editMode == MAP_MODE.PAINT) {
+            paintCell();
+        }
+        else if (appConfigStore.editMode == MAP_MODE.SAMPLE) {
+            sampleCell();
+        }
+        else if (appConfigStore.editMode == MAP_MODE.ERASE) {
+            clearCell();
+        }
+    };
 
-const mouseDownAction = () => {
-    if (appConfigStore.editMode == MAP_MODE.SELECT) {
-        emits("selectStart", {row: props.row, col: props.col});
-    }
-    else if (appConfigStore.editMode == MAP_MODE.PAINT) {
-        emits("enterBrushMode");
-        paintCell();
-    }
-    else if (appConfigStore.editMode == MAP_MODE.ERASE) {
-        emits("enterBrushMode");
-        clearCell();
-    }  
-};
+    const mouseDownAction = () => {
+        if (appConfigStore.editMode == MAP_MODE.SELECT) {
+            emits("selectStart", {row: props.row, col: props.col});
+        }
+        else if (appConfigStore.editMode == MAP_MODE.PAINT) {
+            emits("enterBrushMode");
+            paintCell();
+        }
+        else if (appConfigStore.editMode == MAP_MODE.ERASE) {
+            emits("enterBrushMode");
+            clearCell();
+        }  
+    };
 
-const mouseOverAction = () => {
-    if (appConfigStore.editMode == MAP_MODE.SELECT) {
-        emits("selectMove", {row: props.row, col: props.col});
-    }
-    
-};
+    const mouseOverAction = () => {
+        if (appConfigStore.editMode == MAP_MODE.SELECT) {
+            emits("selectMove", {row: props.row, col: props.col});
+        }
+    };
 
-const mouseUpAction = () => {
-    if (appConfigStore.editMode == MAP_MODE.SELECT) {
-        emits("selectEnd", {row: props.row, col: props.col});
-    }
-    else if (appConfigStore.editMode == MAP_MODE.PAINT) {
-        emits("exitBrushMode");
-    }
-    else if (appConfigStore.editMode == MAP_MODE.ERASE) {
-        emits("exitBrushMode");
-    }
-};
+    const mouseUpAction = () => {
+        if (appConfigStore.editMode == MAP_MODE.SELECT) {
+            emits("selectEnd", {row: props.row, col: props.col});
+        }
+        else if (appConfigStore.editMode == MAP_MODE.PAINT) {
+            emits("exitBrushMode");
+        }
+        else if (appConfigStore.editMode == MAP_MODE.ERASE) {
+            emits("exitBrushMode");
+        }
+    };
 
-const mouseEnterEffect = () => {
-    if (!props.brushMode) return;
-    if (appConfigStore.editMode == MAP_MODE.PAINT) paintCell();
-    else if (appConfigStore.editMode == MAP_MODE.ERASE) clearCell();
-};
+    const mouseEnterEffect = () => {
+        if (!props.brushMode) return;
+        if (appConfigStore.editMode == MAP_MODE.PAINT) paintCell();
+        else if (appConfigStore.editMode == MAP_MODE.ERASE) clearCell();
+    };
 
 
-const paintCell = () => {
-    if (spriteStore.selectedSpriteID) {
-        let [sheetId, spriteId] = spriteStore.selectedSpriteID;
-        mapStore.setTileSprite(props.row, props.col, sheetId, spriteId);
-    }
-};
+    const paintCell = () => {
+        if (spriteStore.selectedSpriteID) {
+            let [sheetId, spriteId] = spriteStore.selectedSpriteID;
+            mapStore.setTileSprite(props.row, props.col, sheetId, spriteId);
+        }
+    };
 
-const sampleCell = () => {
-    const cell = mapStore.getCell(props.row, props.col);
-    if (cell.sprite != null) {
-        spriteStore.setSelectedSprite(cell.sprite[0], cell.sprite[1]);
-    }
-};
+    const sampleCell = () => {
+        const cell = mapStore.getCell(props.row, props.col);
+        if (cell.sprite != null) {
+            spriteStore.setSelectedSprite(cell.sprite[0], cell.sprite[1]);
+        }
+    };
 
-const clearCell = () => {
-    mapStore.clearTileSprite(props.row, props.col);
-};
+    const clearCell = () => {
+        mapStore.clearTileSprite(props.row, props.col);
+    };
 
-const cellStyles = computed(() => {
-    const cell = mapStore.getCell(props.row, props.col);
-    const bgStyles:Record<string, string> = {};
-
-    if (cell.sprite != null) {
-        bgStyles.backgroundSize = 'var(--sheet-bg-size-' + cell.sprite[0] + ')';
-        bgStyles.backgroundImage = 'var(--sheet-bg-' + cell.sprite[0] + ')';
+    const cellStyles = computed(() => {
+        const cell = mapStore.getCell(props.row, props.col);
+        if (cell.sprite === null) return {};
 
         const sprite = spriteStore.findSprite(cell.sprite);
         const posX = (sprite?.x || 0) * appConfigStore.mapScale;
         const posY = (sprite?.y || 0) * appConfigStore.mapScale;
 
-        bgStyles.backgroundPosition = "-" + posX + "px -" + posY + "px ";
-    }
-
-    return bgStyles;
-});
-
-const isCellSelected = computed(() => {
-    if (props.selection == null ) {
-        return false;
-    }
-
-    return (props.row >= props.selection.start.row && props.row <= props.selection.end.row &&
-            props.col >= props.selection.start.col && props.col <= props.selection.end.col);
-});
-
-const cellClasses = computed(() => {
-    return {
-        'gridded': appConfigStore.enableGridLines,
-        'selection-start-row': isCellSelected.value &&  props.row == props.selection.start.row,
-        'selection-end-row': isCellSelected.value &&  props.row == props.selection.end.row,
-        'selection-start-col': isCellSelected.value &&  props.col == props.selection.start.col,
-        'selection-end-col': isCellSelected.value &&  props.col == props.selection.end.col,
-    };
-});
-
+        return {
+            backgroundSize: 'var(--sheet-bg-size-' + cell.sprite[0] + ')',
+            backgroundImage: 'var(--sheet-bg-' + cell.sprite[0] + ')',
+            backgroundPosition: "-" +  pixelValue(posX)  + " -" + pixelValue(posY)
+        }
+    });
 </script>
 
 
@@ -153,39 +129,6 @@ const cellClasses = computed(() => {
         bottom: 0;
         left: 0;
         right: 0;
-    }
-
-    .map-grid-cell.gridded::before {
-        border-color: rgba(var(--grid-line-color), var(--v-border-opacity));
-        border-width: thin;
-    }
-
-    .map-grid-cell:hover::before {
-        border-color: rgba(var(--grid-line-color), 0.8);
-    }
-
-    .map-grid-cell.selection-start-row {
-        border-top-style: dashed;
-        border-top-color: rgb(var(--grid-line-color));
-        border-top-width: thin;
-    }
-
-    .map-grid-cell.selection-end-row {
-        border-bottom-style: dashed;
-        border-bottom-color: rgb(var(--grid-line-color));
-        border-bottom-width: thin;
-    }
-
-    .map-grid-cell.selection-start-col{
-        border-left-style: dashed;
-        border-left-color: rgb(var(--grid-line-color));
-        border-left-width: thin;
-    }
-
-    .map-grid-cell.selection-end-col{
-        border-right-style: dashed;
-        border-right-color: rgb(var(--grid-line-color));
-        border-right-width: thin;
     }
 
 </style>
