@@ -19,6 +19,7 @@ declare module 'vue' {
     MapGridPhysicsCell: typeof import('./components/Map/MapGridPhysicsCell.vue')['default']
     MapGuides: typeof import('./components/Map/MapGuides.vue')['default']
     MapModeSelector: typeof import('./components/Map/MapModeSelector.vue')['default']
+    MapSizeControls: typeof import('./components/Map/MapSizeControls.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SettingsToolbar: typeof import('./components/SettingsToolbar.vue')['default']

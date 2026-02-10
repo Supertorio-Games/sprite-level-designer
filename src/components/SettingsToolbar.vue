@@ -1,5 +1,5 @@
 <template>
-        <v-expansion-panels>
+        <v-expansion-panels :multiple="true">
             <v-expansion-panel>
                 <v-expansion-panel-title>{{ $t('settings.layers') }}</v-expansion-panel-title>
                 <v-expansion-panel-text class="layer-list">
@@ -10,6 +10,9 @@
                 <v-expansion-panel-title>{{ $t('settings.mapConfig') }}</v-expansion-panel-title>
                 <v-expansion-panel-text>
                     <v-list class="panel-list" density="compact">
+                        <v-list-item>
+                            <map-size-controls />
+                        </v-list-item>
                         <v-list-item>
                             <v-slider
                                 v-model="appConfigStore.mapScale"
