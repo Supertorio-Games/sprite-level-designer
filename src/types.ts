@@ -29,6 +29,19 @@ export interface subTexture {
     y: number;
 }
 
+export enum LayerType { "physics", "tile", "background" };
+
+export interface mapLayer {
+    _id: number;
+    _type: LayerType,
+    _interactable: Boolean,
+    title: string;
+    enabled: Boolean;
+    icon: string;
+    stacking: number;
+}
+
+
 export interface blockData {
     _id: number;
     hasCollision: boolean;

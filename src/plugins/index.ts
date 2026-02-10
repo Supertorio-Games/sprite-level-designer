@@ -34,6 +34,7 @@ const i18n = createI18n({
         btnCancel: 'Cancel',
       },
       settings: {
+        layers: 'Layers',
         mapConfig: 'Map Configuration',
         mapScale: 'Map Scale',
         enableGridLines: 'Enable Grid Lines',
