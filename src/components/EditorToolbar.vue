@@ -1,15 +1,9 @@
 <template>
     <sprite-sheet-ingest-form />
-    <v-toolbar border density="compact" class="flex-0-0">
+    <v-toolbar border class="flex-0-0">
         <template v-slot:default>
             <div class="toolbar-contents">
-                <map-mode-selector></map-mode-selector>
-                <form class="map-size-controls">
-                    <span>{{ $t('tools.mapSizeLabel') }} </span>
-                    <input name="grid-width" type="number" v-model="mapStore.mapWidth" /> 
-                    <span>{{ $t('tools.mapSizeDimensionsSeparator') }}</span> 
-                    <input  name="grid-height" type="number" v-model="mapStore.mapHeight" />
-                </form>
+                <map-mode-selector />
             </div>
         </template>
         <template v-slot:append>
@@ -22,10 +16,7 @@
 </template>
 
 <script setup lang="ts">
-    import { useMapStore } from '@/state/mapStore';
     import { useAppStore } from '@/state/appStore';
-
-    const mapStore = useMapStore();
     const { openIngestForm } = useAppStore();
 </script>
 

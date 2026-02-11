@@ -44,6 +44,8 @@ const i18n = createI18n({
         spritePath: 'Sprite Path',
         methodPrefix: 'Method Prefix',
         kaplayMethodPlaceholder: 'kaplay',
+        mapWidth: 'Map Width',
+        mapHeight: 'Map Height',
       },
       tools: {
         selectModeToolTip: 'Select (s)',
