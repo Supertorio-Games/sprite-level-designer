@@ -34,10 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-  import {ref} from 'vue';
-  import SettingsToolbar from '@/components/SettingsToolbar.vue';
   import { useAppStore } from '@/state/appStore';
-
   const appConfigStore = useAppStore();
 </script>
 

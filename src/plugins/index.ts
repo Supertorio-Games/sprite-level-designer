@@ -46,6 +46,14 @@ const i18n = createI18n({
         kaplayMethodPlaceholder: 'kaplay',
         mapWidth: 'Map Width',
         mapHeight: 'Map Height',
+        dangerZone: 'Danger Zone',
+        clearMapData: 'Clear Map Data',
+        clearMapDataConfirmTitle: 'Confirm Clear Map Data',
+        clearMapDataConfirmMessage: 'Are you sure you want to clear the map data?',
+        noUnDoWarningMessage: 'This cannot be undone!',
+        clearAppData: 'Clear App Data',
+        clearAppDataConfirmTitle: 'Confirm Clear App Data',
+        clearAppDataConfirmMessage: 'Are you sure you want to clear and reset all app data?',
       },
       tools: {
         selectModeToolTip: 'Select (s)',
@@ -83,6 +91,7 @@ const i18n = createI18n({
       misc: {
         phaserComingSoon: '"// Phaser Code Coming Soon"',
         btnClose: "Close",
+        btnCancel: 'Cancel',
       }
     }
   }
