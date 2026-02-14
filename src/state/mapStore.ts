@@ -101,48 +101,13 @@ export const useMapStore = defineStore(StoreName, () => {
 
     // Watchers
 
-    watch(mapWidth, (newWidth, oldWidth) => {
-        if (newWidth > oldWidth) {
-            const diff = newWidth - oldWidth;
-            for (let r = 0; r < mapHeight.value; r++) {
-                for (let c = 0; c < diff; c++) {
-                    if (!mapGrid[r]) {
-                        mapGrid[r] = [];
-                        for (let c = 0; c < newWidth; c++) {
-                            mapGrid[r].push({sprite: null});
-                        }
-                    } else {
-                        mapGrid[r].push({sprite: null});
-                    }
-                }
-            }
-        } else {
-            const diff = oldWidth - newWidth;
-            for (let r = 0; r < mapHeight.value; r++) {
-                for (let c = 0; c < diff; c++) {
-                    mapGrid[r].pop();
-                }
-            }
-        }
+    watch(mapWidth, () => {        
+        reconcileMapDimensions();
         persistTrigger.value = !persistTrigger.value;
     });
 
-    watch(mapHeight, (newHeight, oldHeight) => {
-        if (newHeight > oldHeight) {
-            const diff = newHeight - oldHeight;
-            for (let r = 0; r < diff; r++) {
-                const newRow = [];
-                for (let c = 0; c < mapWidth.value; c++) {
-                    newRow.push({sprite: null});
-                }
-                mapGrid.push(newRow);
-            }
-        } else {
-            const diff = oldHeight - newHeight;
-            for (let r = 0; r < diff; r++) {
-                mapGrid.pop();
-            }
-        }
+    watch(mapHeight, () => {
+        reconcileMapDimensions();
         persistTrigger.value = !persistTrigger.value;
     });
 
@@ -208,6 +173,7 @@ export const useMapStore = defineStore(StoreName, () => {
     };
 
     const clearTileSprite = (row: number, col: number) => {
+        if (!mapGrid[row][col] || !mapGrid[row][col]?.sprite) return;
         getCell(row, col).sprite = null;
     }
 
@@ -227,19 +193,69 @@ export const useMapStore = defineStore(StoreName, () => {
         selectionEnd.value = null;
     }
 
-    const clearSpriteSheetFromMap = (spriteSheetID: number) => {
+     const clearSpriteSheetFromMap = async (spriteSheetID: number) => {
         for (let r = 0; r <= mapGrid.length; r++) {
             if (!mapGrid[r]) continue;
             for (let c = 0; c <= mapGrid[r].length; c++) {
                 if (!mapGrid[r][c] || !mapGrid[r][c]?.sprite) continue;
 
-                const row = r+1, col = c+1;
-                const cellSprite = getCell(row, col).sprite;
+                const cellSprite = mapGrid[r][c].sprite;
                 if ( cellSprite && cellSprite[0] == spriteSheetID) {
-                    clearTileSprite(row, col);
+                    mapGrid[r][c].sprite = null;
                 }
             }
         }
+        return { success: true };
+    }
+
+    const clearMapData = () => {
+        for (let r = 0; r < mapGrid.length; r++) {
+            for (let c = 0; c < mapGrid[r].length; c++) {
+                try {
+                    mapGrid[r][c].sprite = null;
+                } catch (_e) {
+                    mapGrid[r][c] = {...defaultMapCell};
+                }
+             } 
+        }
+    }
+
+    const reconcileMapDimensions = () => {
+
+        // Remove Excess Rows
+        if (mapGrid.length > mapHeight.value) {
+            mapGrid.length = mapHeight.value;
+        } 
+        // Add Missing Rows
+        else if (mapGrid.length < mapHeight.value) {
+            for (let r = mapGrid.length-1; r < mapHeight.value; r++) {
+                mapGrid[r] = [];
+                for (let c = 0; c < mapWidth.value; c++) {
+                    mapGrid[r][c] = {...defaultMapCell};
+                }
+            }
+        }
+
+        // Reconcile each row width
+        for (let r = 0; r < mapGrid.length; r++) {
+            // Remove Excess Columns
+            if (mapGrid[r].length > mapWidth.value) {
+                mapGrid[r].length = mapWidth.value;
+            }
+            // Add missing columns
+            else if (mapGrid[r].length < mapWidth.value) {
+                for (let c = mapGrid[r].length-1; c < mapWidth.value; c++) {
+                    mapGrid[r][c] = {...defaultMapCell};
+                }
+            }
+        }
+    }
+
+    const resetAllData = () => {
+        clearMapData();
+        cellSize.value = DEFAULT_CELL_SIZE;
+        mapWidth.value = DEFAULT_MAP_WIDTH;
+        mapHeight.value = DEFAULT_MAP_HEIGHT;
     }
 
 
@@ -261,7 +277,9 @@ export const useMapStore = defineStore(StoreName, () => {
         clearTileSprite,
         clearSelectionRange,
         clearSpriteSheetFromMap,
+        clearMapData,
         layerList,
+        resetAllData,
     };
 
 }, {

@@ -75,6 +75,10 @@ export const useSpritesStore = defineStore(StoreName, () => {
         spriteSheets.value.splice(sheetIndex, 1);
     }
 
+    const clearSpriteData = () => {
+        spriteSheets.value.length = 0;
+    }
+    
     return { 
         spriteSheets,
         hasSheets,
@@ -85,6 +89,7 @@ export const useSpritesStore = defineStore(StoreName, () => {
         findSprite,
         setSelectedSprite,
         removeSpriteSheet,
+        clearSpriteData,
     };
 
 }, {

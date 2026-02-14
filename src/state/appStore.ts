@@ -25,6 +25,16 @@ export const useAppStore = defineStore(StoreName, () => {
     const openIngestForm = () => ingestFormOpen.value = true;
     const closeIngestForm = () => ingestFormOpen.value = false;
 
+    const resetAppData = () => {
+        editMode.value = MAP_MODE.SELECT;
+        outputSpritePath.value = "";
+        kaplayOptPrefix.value = "";
+        mapScale.value = DEFAULT_MAP_SCALE;
+        enableGridLines.value = true;
+        mapBackgroundColor.value = DEFAULT_MAP_BACKGROUND_COLOR;
+        gridLineColor.value = DEFAULT_GRID_COLOR;
+    }
+
     return {
         toolbarOpen,
         editMode,
@@ -36,7 +46,8 @@ export const useAppStore = defineStore(StoreName, () => {
         mapBackgroundColor,
         gridLineColor,
         openIngestForm,
-        closeIngestForm
+        closeIngestForm,
+        resetAppData,
     };
 
 }, {
